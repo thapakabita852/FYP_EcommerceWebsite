@@ -1,0 +1,242 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - A&K Accessories And Closet</title>
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script defer src="{% static 'js/profile.js' %}"></script>
+</head>
+<body>
+  <div class="layout">
+    <!-- Side Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1 class="logo">A&K Closet</h1>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="profile-details">
+          <i class="fas fa-user"></i>
+          <span>Profile Details</span>
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <button class="nav-item" data-tab="order-details">
+          <i class="fas fa-box"></i>
+          <span>Order History</span>
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <button class="nav-item" data-tab="password-management">
+          <i class="fas fa-key"></i>
+          <span>Security</span>
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">
+            <span>{{ user.username|slice:":2"|upper }}</span>
+          </div>
+          <div class="user-info">
+            <p class="user-name">{{ user.username }}</p>
+            <p class="user-email">{{ user.email }}</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="main-header">
+        <h2 id="page-title">Profile Details</h2>
+        <div class="header-actions">
+          <a href="{% url 'accounts:dashboard' %}" class="nav-button">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+          </a>
+          <a href="{% url 'accounts:logout' %}" class="nav-button nav-button-logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </header>
+
+      <div class="content-wrapper">
+        <!-- Profile Details Panel -->
+        <div id="profile-details" class="panel active">
+          <div class="profile-card">
+            <!-- Profile Picture Section -->
+            <div class="profile-picture">
+              {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
+              {% else %}
+                <img src="{% static 'images/default.jpg' %}" alt="Default Profile Picture">
+              {% endif %}
+            </div>
+
+            <!-- Profile Info Grid -->
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="label">Address</span>
+                <span class="value">{{ profile.address|default:"Not provided" }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Age</span>
+                <span class="value">{{ profile.age|default:"Not provided" }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Phone</span>
+                <span class="value">{{ profile.phone|default:"Not provided" }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Sex</span>
+                <span class="value">{{ profile.sex|default:"Not provided" }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Height (cm)</span>
+                <span class="value">{{ profile.height|default:"Not provided" }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Weight (kg)</span>
+                <span class="value">{{ profile.weight|default:"Not provided" }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Bust</span>
+                <span class="value">{{ profile.bust|default:"Not provided" }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Waist</span>
+                <span class="value">{{ profile.waist|default:"Not provided" }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Hips</span>
+                <span class="value">{{ profile.hips|default:"Not provided" }}</span>
+              </div>
+            </div>
+
+            <!-- Edit Profile Button -->
+            <button class="btn btn-primary" id="edit-profile-btn">Edit Profile</button>
+
+            <!-- Edit Profile Form (Hidden by Default) -->
+            <form id="profile-form" class="edit-form hidden" action="{% url 'accounts:update_profile' %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="address">Address</label>
+                  <input type="text" name="address" id="address" value="{{ profile.address }}">
+                </div>
+                <div class="form-group">
+                  <label for="age">Age</label>
+                  <input type="number" name="age" id="age" value="{{ profile.age }}">
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="text" name="phone" id="phone" value="{{ profile.phone }}">
+                </div>
+                <div class="form-group">
+                  <label for="sex">Sex</label>
+                  <select name="sex" id="sex">
+                    <option value="">Select</option>
+                    <option value="Male" {% if profile.sex == "Male" %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if profile.sex == "Female" %}selected{% endif %}>Female</option>
+                    <option value="Other" {% if profile.sex == "Other" %}selected{% endif %}>Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="height">Height (cm)</label>
+                  <input type="number" step="0.01" name="height" id="height" value="{{ profile.height }}">
+                </div>
+                <div class="form-group">
+                  <label for="weight">Weight (kg)</label>
+                  <input type="number" step="0.01" name="weight" id="weight" value="{{ profile.weight }}">
+                </div>
+                <div class="form-group">
+                  <label for="bust">Bust</label>
+                  <input type="number" step="0.01" name="bust" id="bust" value="{{ profile.bust }}">
+                </div>
+                <div class="form-group">
+                  <label for="waist">Waist</label>
+                  <input type="number" step="0.01" name="waist" id="waist" value="{{ profile.waist }}">
+                </div>
+                <div class="form-group">
+                  <label for="hips">Hips</label>
+                  <input type="number" step="0.01" name="hips" id="hips" value="{{ profile.hips }}">
+                </div>
+                <div class="form-group">
+                  <label for="profile_picture">Profile Picture</label>
+                  <input type="file" name="profile_picture" id="profile_picture">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-secondary" id="cancel-edit-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Order Details Panel -->
+        <div id="order-details" class="panel">
+          <div class="orders-list">
+            {% if orders %}
+              {% for order in orders %}
+                <div class="order-card">
+                  <div class="order-header">
+                    <h3>Order #{{ order.id }}</h3>
+                    <span class="order-status" data-status="{{ order.status|lower }}">{{ order.status }}</span>
+                  </div>
+                  <div class="order-info">
+                    <p class="order-date">Date: {{ order.date|date:"M d, Y" }}</p>
+                    <p class="order-total">Total Price: ${{ order.total_price }}</p>
+                    <div class="order-items">
+                      <h4>Items:</h4>
+                      <ul>
+                        {% for item in order.items.all %}
+                          <li>
+                            <span class="order-item-name">{{ item.product.title }}</span> -
+                            <span class="order-item-qty">Qty: {{ item.quantity }}</span> -
+                            <span class="order-item-price">Price: ${{ item.price }}</span>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="empty-state">
+                <i class="fas fa-box-open"></i>
+                <p>No orders found</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Password Management Panel -->
+        <div id="password-management" class="panel">
+          <div class="password-card">
+            <form action="{% url 'accounts:change_password' %}" method="POST" class="password-form">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="old_password">Current Password</label>
+                <input type="password" name="old_password" id="old_password" required>
+              </div>
+              <div class="form-group">
+                <label for="new_password1">New Password</label>
+                <input type="password" name="new_password1" id="new_password1" required>
+              </div>
+              <div class="form-group">
+                <label for="new_password2">Confirm New Password</label>
+                <input type="password" name="new_password2" id="new_password2" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Update Password</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

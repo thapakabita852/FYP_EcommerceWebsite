@@ -1,0 +1,276 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing - A&K Accessories And Closet</title>
+    <!-- Bootstrap and Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/dash-style.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="{% static 'js/dash-script.js' %}"></script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <!-- Left Section: Brand and Primary Links -->
+          <div class="d-flex align-items-center">
+            <a class="navbar-brand" href="{% url 'products:landing_page' %}">
+              A&K Accessories And Closet
+            </a>
+            <ul class="navbar-nav ms-3">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'products:landing_page' %}?category=clothing">Clothing</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'products:landing_page' %}?category=accessories">Accessories</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'products:landing_page' %}?category=eco-friendly">ECO-Friendly</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Center Section: Search Bar -->
+          <div class="d-flex flex-grow-1 justify-content-center">
+            <form class="d-flex" action="{% url 'products:landing_page' %}" method="GET" style="max-width: 400px; width: 100%;">
+              <input
+                class="form-control"
+                type="search"
+                name="q"
+                placeholder="Search"
+                aria-label="Search"
+                style="height: 40px; border-radius: 20px 0 0 20px;"
+              />
+              <button
+                class="btn"
+                type="submit"
+                style="height: 40px; width: 40px; background-color: #e91e63; color: white; border-radius: 0 20px 20px 0;"
+              >
+                <i class="fa fa-search"></i>
+              </button>
+            </form>
+          </div>
+
+          <!-- Right Section: Icon Links -->
+          <div class="d-flex align-items-center">
+            <a href="{% if user.is_authenticated %}{% url 'accounts:profile' %}{% else %}javascript:void(0);{% endif %}"
+               class="nav-icon-link me-3 {% if not user.is_authenticated %}requires-login{% endif %}">
+              <i class="fa fa-user"></i>
+              <span class="icon-text">Profile</span>
+            </a>
+            <a href="{% if user.is_authenticated %}#{% else %}javascript:void(0);{% endif %}"
+               class="nav-icon-link me-3 {% if not user.is_authenticated %}requires-login{% endif %}">
+              <i class="fa fa-heart"></i>
+              <span class="icon-text">Wishlist</span>
+              <span class="badge">0</span>
+            </a>
+            <a href="{% if user.is_authenticated %}{% url 'cart:view_cart' %}{% else %}javascript:void(0);{% endif %}"
+               class="nav-icon-link me-3 {% if not user.is_authenticated %}requires-login{% endif %}">
+              <i class="fa fa-shopping-cart"></i>
+              <span class="icon-text">Cart</span>
+              <span class="badge">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
+            </a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'accounts:logout' %}" class="nav-icon-link">
+              <i class="fa fa-sign-out"></i>
+              <span class="icon-text">Logout</span>
+            </a>
+            {% else %}
+            <a href="javascript:void(0);" class="nav-icon-link requires-login">
+              <i class="fa fa-sign-out"></i>
+              <span class="icon-text">Logout</span>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="container">
+          <div class="row align-items-center">
+            <!-- Left Content -->
+            <div class="col-md-6 hero-text-section">
+              <h1 class="hero-title">Discover Your Style</h1>
+              <p class="hero-text">
+                Ethically made fashion for every body type. Shop now and embrace sustainability!
+              </p>
+              <div class="hero-buttons">
+                <a href="{% if user.is_authenticated %}{% url 'products:landing_page' %}{% else %}javascript:void(0);{% endif %}"
+                   class="btn btn-custom-primary {% if not user.is_authenticated %}requires-login{% endif %}">
+                  Shop Now
+                </a>
+                <a href="{% if user.is_authenticated %}{% url 'products:landing_page' %}?category=eco-friendly{% else %}javascript:void(0);{% endif %}"
+                   class="btn btn-custom-secondary {% if not user.is_authenticated %}requires-login{% endif %}">
+                  Learn More
+                </a>
+              </div>
+            </div>
+            <!-- Right Image -->
+            <div class="col-md-6 hero-image-container">
+              <img src="{% static 'dashboard/images/hero.jpg' %}" alt="Hero Image" class="hero-image" />
+              <div class="image-overlay"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Shop by Category Section -->
+      <section class="container my-5">
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col">
+            <div class="card h-100">
+              <img src="{% static 'dashboard/images/cloth.jpg' %}" class="card-img-top" alt="Clothing" />
+              <div class="card-body">
+                <h5 class="card-title">Clothing</h5>
+                <a href="{% if user.is_authenticated %}{% url 'products:landing_page' %}?category=clothing{% else %}javascript:void(0);{% endif %}"
+                   class="btn btn-primary btn-sm {% if not user.is_authenticated %}requires-login{% endif %}">
+                  Explore
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{% static 'dashboard/images/acc.jpg' %}" class="card-img-top" alt="Accessories" />
+              <div class="card-body">
+                <h5 class="card-title">Accessories</h5>
+                <a href="{% if user.is_authenticated %}{% url 'products:landing_page' %}?category=accessories{% else %}javascript:void(0);{% endif %}"
+                   class="btn btn-primary btn-sm {% if not user.is_authenticated %}requires-login{% endif %}">
+                  Explore
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{% static 'dashboard/images/eco.jpg' %}" class="card-img-top" alt="Eco-Friendly" />
+              <div class="card-body">
+                <h5 class="card-title">Eco-Friendly</h5>
+                <a href="{% if user.is_authenticated %}{% url 'products:landing_page' %}?category=eco-friendly{% else %}javascript:void(0);{% endif %}"
+                   class="btn btn-primary btn-sm {% if not user.is_authenticated %}requires-login{% endif %}">
+                  Explore
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trending Products Section -->
+      <section class="container trending-section my-5">
+  <h2 class="section-title">Trending Products</h2>
+  <div class="trending-products">
+    {% if trending_products %}
+      {% for product in trending_products %}
+        <div class="product">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+          {% else %}
+            <img src="{% static 'images/default.png' %}" alt="Default Image">
+          {% endif %}
+          <h2>{{ product.title }}</h2>
+          <p>${{ product.price }}</p>
+          <a href="{% if user.is_authenticated %}{% url 'cart:add_to_cart' product.id %}{% else %}javascript:void(0);{% endif %}"
+             class="btn {% if not user.is_authenticated %}requires-login{% endif %}">
+            Add to Cart
+          </a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-center">No trending products available.</p>
+    {% endif %}
+  </div>
+</section>
+    </main>
+
+    <footer class="footer-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <h5>About Us</h5>
+            <p>Learn more about A&K Accessories and Closet.</p>
+          </div>
+          <div class="col-md-3">
+            <h5>Contact</h5>
+            <ul class="list-unstyled">
+              <li>Email: ak077@gmail.com</li>
+              <li>Phone: +977 9866413343</li>
+              <li>Address: Kathmandu Online, Style City</li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5>Help</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="{% if user.is_authenticated %}#{% else %}javascript:void(0);{% endif %}"
+                   class="{% if not user.is_authenticated %}requires-login{% endif %}">
+                  FAQs
+                </a>
+              </li>
+              <li>
+                <a href="{% if user.is_authenticated %}#{% else %}javascript:void(0);{% endif %}"
+                   class="{% if not user.is_authenticated %}requires-login{% endif %}">
+                  Shipping
+                </a>
+              </li>
+              <li>
+                <a href="{% if user.is_authenticated %}#{% else %}javascript:void(0);{% endif %}"
+                   class="{% if not user.is_authenticated %}requires-login{% endif %}">
+                  Returns
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5>Info</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="{% if user.is_authenticated %}#{% else %}javascript:void(0);{% endif %}"
+                   class="{% if not user.is_authenticated %}requires-login{% endif %}">
+                  Privacy
+                </a>
+              </li>
+              <li>
+                <a href="{% if user.is_authenticated %}#{% else %}javascript:void(0);{% endif %}"
+                   class="{% if not user.is_authenticated %}requires-login{% endif %}">
+                  Terms
+                </a>
+              </li>
+              <li>
+                <a href="{% if user.is_authenticated %}#{% else %}javascript:void(0);{% endif %}"
+                   class="{% if not user.is_authenticated %}requires-login{% endif %}">
+                  Careers
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="text-center py-4">
+          <p>&copy; 2025 A&K Accessories And Closet</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript to prompt login if user is not authenticated -->
+    {% if not user.is_authenticated %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var loginElements = document.querySelectorAll(".requires-login");
+        loginElements.forEach(function (el) {
+          el.addEventListener("click", function (e) {
+            e.preventDefault();
+            alert("Please log in to continue.");
+            window.location.href = "{% url 'accounts:login' %}?next=" + window.location.pathname;
+          });
+        });
+      });
+    </script>
+    {% endif %}
+  </body>
+</html>
