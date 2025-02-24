@@ -1,0 +1,52 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+  <style>
+    /* Basic styles for cart items */
+    .cart-item { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding: 1rem; border: 1px solid #eee; }
+    .cart-item form { display: inline-block; }
+    .cart-item button { margin-left: 0.5rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="{% url 'accounts:dashboard' %}">Home</a>
+    <a href="{% url 'accounts:profile' %}">Profile</a>
+    <a href="{% url 'accounts:logout' %}">Logout</a>
+  </nav>
+  <div class="container">
+    <h1>Your Cart</h1>
+    {% if cart.items.all %}
+      {% for item in cart.items.all %}
+        <div class="cart-item">
+          <div>
+            <strong>{{ item.product.title }}</strong><br>
+            Price: ${{ item.product.price }}<br>
+            Quantity: {{ item.quantity }}
+          </div>
+          <div>
+            <!-- Form to update quantity -->
+            <form action="{% url 'cart:update_cart' item.id %}" method="POST" style="display:inline;">
+              {% csrf_token %}
+              <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width:50px;">
+              <button type="submit">Update</button>
+            </form>
+            <!-- Link to remove item -->
+            <a href="{% url 'cart:remove_from_cart' item.id %}" class="btn">Remove</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>Your cart is empty.</p>
+    {% endif %}
+    <a href="{% url 'products:landing_page' %}" class="btn">Continue Shopping</a>
+<!-- Change the Place Order button to link to the payment page -->
+<form action="{% url 'orders:payment' %}" method="GET" style="margin-top:1rem;">
+  <button type="submit" class="btn">Place Order</button>
+</form>
+  </div>
+</body>
+</html>

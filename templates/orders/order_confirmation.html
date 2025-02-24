@@ -1,0 +1,21 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Confirmation</title>
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+</head>
+<body>
+  <nav>
+    <a href="{% url 'products:landing_page' %}">Home</a>
+    <a href="{% url 'accounts:profile' %}">Profile</a>
+    <a href="{% url 'accounts:logout' %}">Logout</a>
+  </nav>
+  <div class="container">
+    <h1>Order Confirmation</h1>
+    <p>Thank you for your order! Your order ID is {{ order.id }}.</p>
+    <p>Total Price: ${{ order.total_price }}</p>
+    <a href="{% url 'products:landing_page' %}" class="btn">Continue Shopping</a>
+  </div>
+</body>
+</html>
