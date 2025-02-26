@@ -17,7 +17,7 @@
           <!-- Left Section: Brand and Primary Links -->
           <div class="d-flex align-items-center">
             <a class="navbar-brand" href="{% url 'products:landing_page' %}">
-              A&K Accessories And Closet
+              A&K
             </a>
             <ul class="navbar-nav ms-3">
               <li class="nav-item">
@@ -95,7 +95,7 @@
             </div>
             <!-- Right Image -->
             <div class="col-md-6 hero-image-container">
-              <img src="{% static 'dashboard/images/hero.jpg' %}" alt="Hero Image" class="hero-image" />
+              <img src="{% static 'images/hero.jpg' %}" alt="Hero Image" class="hero-image" />
               <div class="image-overlay"></div>
             </div>
           </div>
@@ -108,7 +108,7 @@
         <div class="row row-cols-1 row-cols-md-3 g-4">
           <div class="col">
             <div class="card h-100">
-              <img src="{% static 'dashboard/images/cloth.jpg' %}" class="card-img-top" alt="Clothing" />
+             <img src="{% static 'images/cloth.jpg' %}" class="card-img-top" alt="Clothing" />
               <div class="card-body">
                 <h5 class="card-title">Clothing</h5>
                 <a href="{% url 'products:landing_page' %}?category=clothing" class="btn btn-primary btn-sm">Explore</a>
@@ -117,7 +117,7 @@
           </div>
           <div class="col">
             <div class="card h-100">
-              <img src="{% static 'dashboard/images/acc.jpg' %}" class="card-img-top" alt="Accessories" />
+              <img src="{% static 'images/acc.jpg' %}" class="card-img-top" alt="Accessories" />
               <div class="card-body">
                 <h5 class="card-title">Accessories</h5>
                 <a href="{% url 'products:landing_page' %}?category=accessories" class="btn btn-primary btn-sm">Explore</a>
@@ -126,7 +126,7 @@
           </div>
           <div class="col">
             <div class="card h-100">
-              <img src="{% static 'dashboard/images/eco.jpg' %}" class="card-img-top" alt="Eco-Friendly" />
+              <img src="{% static 'images/eco.jpg' %}" class="card-img-top" alt="Eco-Friendly" />
               <div class="card-body">
                 <h5 class="card-title">Eco-Friendly</h5>
                 <a href="{% url 'products:landing_page' %}?category=eco-friendly" class="btn btn-primary btn-sm">Explore</a>
@@ -149,7 +149,7 @@
             <img src="{% static 'images/default.png' %}" alt="Default Image">
           {% endif %}
           <h2>{{ product.title }}</h2>
-          <p>${{ product.price }}</p>
+          <p>Rs.{{ product.price }}</p>
           {% if user.is_authenticated %}
             <a href="{% url 'cart:add_to_cart' product.id %}" class="btn">Add to Cart</a>
           {% else %}
