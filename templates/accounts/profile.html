@@ -189,7 +189,7 @@
                   </div>
                   <div class="order-info">
                     <p class="order-date">Date: {{ order.date|date:"M d, Y" }}</p>
-                    <p class="order-total">Total Price: ${{ order.total_price }}</p>
+                    <p class="order-total">Total Price: Rs.{{ order.total_price }}</p>
                     <div class="order-items">
                       <h4>Items:</h4>
                       <ul>
@@ -197,7 +197,7 @@
                           <li>
                             <span class="order-item-name">{{ item.product.title }}</span> -
                             <span class="order-item-qty">Qty: {{ item.quantity }}</span> -
-                            <span class="order-item-price">Price: ${{ item.price }}</span>
+                            <span class="order-item-price">Price: Rs.{{ item.price }}</span>
                           </li>
                         {% endfor %}
                       </ul>
