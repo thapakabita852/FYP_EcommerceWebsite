@@ -1,5 +1,4 @@
 {% load static %}
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -20,7 +19,7 @@
 
   <div class="payment-container">
     <h1>Payment Information</h1>
-    <p>Total Amount: ${{ total_price }}</p>
+    <p>Total Amount: Rs.{{ total_price }}</p>
 
     <form id="payment-form" action="{% url 'orders:process_payment' %}" method="POST">
       {% csrf_token %}
