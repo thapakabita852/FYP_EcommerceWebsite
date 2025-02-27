@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from apps.products.models import Product
 
 class Order(models.Model):
+    objects = None
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, default='Processing')

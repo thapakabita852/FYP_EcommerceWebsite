@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Product(models.Model):
+    objects = None
     CATEGORY_CHOICES = [
         ('clothing', 'Clothing'),
         ('accessories', 'Accessories'),

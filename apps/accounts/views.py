@@ -1,3 +1,6 @@
+import re
+from django.contrib.auth import password_validation
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -6,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile  # Make sure to import Profile
 from apps.orders.models import Order  # import the Order model
 from apps.products.models import Product
+
 
 
 def auth_view(request):
@@ -25,21 +29,77 @@ def login_view(request):
     return redirect('accounts:auth')
 
 
+def is_valid_password(password):
+    if len(password) < 8:
+        return "Password must be at least 8 characters long."
+    if not re.match(r'^[a-zA-Z]', password):
+        return "Password must begin with a letter."
+    if not any(char.isdigit() for char in password):
+        return "Password must include at least one number."
+    if not any(char.islower() for char in password):
+        return "Password must include at least one lowercase letter."
+    if not any(char.isupper() for char in password):
+        return "Password must include at least one uppercase letter."
+    if not any(char in '!";#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~' for char in password):
+        return "Password must include at least one symbol."
+    if any(char in 'il1Lo0O' for char in password):
+        return "Password must not contain similar characters (i, l, 1, L, o, 0, O, etc.)."
+    if len(set(password)) < len(password):
+        return "Password must not contain duplicate characters."
+    if re.search(r'(?:abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz|123|234|345|456|567|678|789|890)', password, re.IGNORECASE):
+        return "Password must not contain sequential characters."
+    return None
+
 def signup_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
+
         if password != confirm_password:
             messages.error(request, 'Passwords do not match')
             return redirect('accounts:auth')
+
+        validation_error = is_valid_password(password)
+        if validation_error:
+            messages.error(request, validation_error)
+            return redirect('accounts:auth')
+
+        try:
+            password_validation.validate_password(password, user=None)
+        except ValidationError as e:
+            messages.error(request, ', '.join(e.messages))
+            return redirect('accounts:auth')
+
         if User.objects.filter(username=name).exists():
             messages.error(request, 'Username already exists')
             return redirect('accounts:auth')
+
         user = User.objects.create_user(username=name, password=password)
-        login(request, user)
-        return redirect('accounts:dashboard')
-    return redirect('accounts:auth')
+
+        messages.success(request, "Account created successfully! Please log in.")
+        return redirect('accounts:login')
+
+    return redirect('accounts:login_signup')
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,  # Set a minimum password length
+        }
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
 
 
 def logout_view(request):
