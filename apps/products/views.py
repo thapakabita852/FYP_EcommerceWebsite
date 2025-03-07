@@ -9,7 +9,6 @@ def landing_page(request):
         products = Product.objects.all()
     return render(request, 'landing.html', {'products': products})
 
-
 def landing_page(request):
     # Handle category filtering for products list
     category = request.GET.get('category')
@@ -48,3 +47,13 @@ def landing_page(request):
         }
         # Non–logged-in users see the landing template
         return render(request, 'landing.html', context)
+
+
+def clothing_view(request):
+    return render(request, 'products/clothing.html')
+
+def accessories_view(request):
+    return render(request, 'products/accessories.html')
+
+def eco_friendly_view(request):
+    return render(request, 'products/eco_friendly.html')
