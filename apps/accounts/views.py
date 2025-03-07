@@ -42,8 +42,6 @@ def is_valid_password(password):
         return "Password must include at least one uppercase letter."
     if not any(char in '!";#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~' for char in password):
         return "Password must include at least one symbol."
-    if any(char in 'il1Lo0O' for char in password):
-        return "Password must not contain similar characters (i, l, 1, L, o, 0, O, etc.)."
     if len(set(password)) < len(password):
         return "Password must not contain duplicate characters."
     if re.search(r'(?:abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz|123|234|345|456|567|678|789|890)', password, re.IGNORECASE):
