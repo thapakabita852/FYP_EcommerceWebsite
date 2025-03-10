@@ -16,7 +16,7 @@
                 <!-- Brand Logo -->
                 <a class="navbar-brand" href="{% url 'products:landing_page' %}">A&K</a>
                 <!-- Navigation Links -->
-                <ul class="navbar-nav ms-3">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'products:clothing' %}">Clothing</a>
                     </li>
@@ -32,77 +32,134 @@
     </header>
 
     <main class="container my-5">
-        <section id="clothing" class="category">
-            <h2 class="text-center">Clothing</h2>
-            <!-- Filters -->
-            <div class="filters text-center my-3">
-                <label>Color: <input type="color"></label>
-                <label>Size:
-                    <select>
-                        <option>S</option>
-                        <option>M</option>
-                        <option>L</option>
+        <!-- Form for Filters -->
+        <form method="GET" action="{% url 'products:clothing' %}" class="filters-form">
+            <div class="row g-3">
+                <!-- Sort By -->
+                <div class="col-md-3">
+                    <label for="sort_by">Sort By:</label>
+                    <select name="sort_by" id="sort_by" class="form-control">
+                        <option value="default">Default</option>
+                        <option value="price_low">Price: Low to High</option>
+                        <option value="price_high">Price: High to Low</option>
+                        <option value="newest">Newest Arrivals</option>
                     </select>
-                </label>
-                <label>Body Type:
-                    <select>
-                        <option>Petite</option>
-                        <option>Regular</option>
-                        <option>Plus Size</option>
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-3">
+                    <label for="category">Category:</label>
+                    <select name="category" id="category" class="form-control">
+                        <option value="">All</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="eco_friendly">Eco-Friendly</option>
                     </select>
-                </label>
+                </div>
+
+                <!-- Clothing Type -->
+                <div class="col-md-3">
+                    <label for="clothing_type">Clothing Type:</label>
+                    <select name="clothing_type" id="clothing_type" class="form-control">
+                        <option value="">All</option>
+                        <option value="casual">Casual</option>
+                        <option value="formal">Formal</option>
+                        <option value="sporty">Sporty</option>
+                        <option value="boho">Boho</option>
+                        <option value="jackets">Jackets</option>
+                    </select>
+                </div>
+
+                <!-- Size -->
+                <div class="col-md-3">
+                    <label>Size:</label><br>
+                    <div class="d-flex gap-2">
+                        <input type="checkbox" name="size" value="S"> S
+                        <input type="checkbox" name="size" value="M"> M
+                        <input type="checkbox" name="size" value="L"> L
+                        <input type="checkbox" name="size" value="XL"> XL
+                    </div>
+                </div>
+
+                <!-- Sale / New Season -->
+                <div class="col-md-3">
+                    <label for="sale_new">Sale / New Season:</label>
+                    <select name="sale_new" id="sale_new" class="form-control">
+                        <option value="">All</option>
+                        <option value="sale">Sale</option>
+                        <option value="new">New Season</option>
+                    </select>
+                </div>
+
+                <!-- Style -->
+                <div class="col-md-3">
+                    <label for="style">Style:</label>
+                    <select name="style" id="style" class="form-control">
+                        <option value="">All</option>
+                        <option value="casual">Casual</option>
+                        <option value="formal">Formal</option>
+                        <option value="sporty">Sporty</option>
+                        <option value="boho">Boho</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+    <label for="color">Color:</label>
+    <select name="color" id="color" class="form-control">
+        <option value="">All</option>
+        <option value="#ff0000">Red</option>
+        <option value="#00ff00">Green</option>
+        <option value="#0000ff">Blue</option>
+        <option value="#ffff00">Yellow</option>
+        <option value="#000000">Black</option>
+        <option value="#ffffff">White</option>
+        <option value="#808080">Gray</option>
+        <option value="#ffa500">Orange</option>
+        <option value="#800080">Purple</option>
+        <option value="#ffc0cb">Pink</option>
+    </select>
+</div>
+
+                <!-- Body Fit -->
+                <div class="col-md-3">
+                    <label for="body_fit">Body Fit:</label>
+                    <select name="body_fit" id="body_fit" class="form-control">
+                        <option value="">All</option>
+                        <option value="petite">Petite</option>
+                        <option value="regular">Regular</option>
+                        <option value="plus_size">Plus Size</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-md-12 text-center mt-3">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
             </div>
-            <!-- Product Cards -->
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <div class="col">
-                    <div class="card h-100">
-                        <!-- Product Image -->
-                        <img src="{% static 'images/cloth1.jpg' %}" class="card-img-top" alt="Stylish Dress">
-                        <div class="card-body">
-                            <!-- Product Title -->
-                            <h5 class="card-title">Stylish Dress</h5>
-                            <!-- Product Description -->
-                            <p class="card-text">Comfortable and trendy dress for all occasions.</p>
-                            <!-- Buttons -->
-                            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
-                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <!-- Product Image -->
-                        <img src="{% static 'images/cloth2.jpg' %}" class="card-img-top" alt="Casual Shirt">
-                        <div class="card-body">
-                            <!-- Product Title -->
-                            <h5 class="card-title">Casual Shirt</h5>
-                            <!-- Product Description -->
-                            <p class="card-text">Perfect for casual outings and daily wear.</p>
-                            <!-- Buttons -->
-                            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
-                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <!-- Product Image -->
-                        <img src="{% static 'images/cloth3.jpg' %}" class="card-img-top" alt="Denim Jacket">
-                        <div class="card-body">
-                            <!-- Product Title -->
-                            <h5 class="card-title">Denim Jacket</h5>
-                            <!-- Product Description -->
-                            <p class="card-text">Classic denim jacket for a stylish look.</p>
-                            <!-- Buttons -->
-                            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
-                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                        </div>
+        </form>
+
+        <!-- Product Grid -->
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
+            {% for product in products %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.title }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-text"><strong>${{ product.price }}</strong></p>
+                        <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
+                        <button class="btn btn-primary add-to-cart">Add to Cart</button>
                     </div>
                 </div>
             </div>
-            <!-- Flash Notification -->
-            <p class="flash-notification text-center mt-4">Limited Offer: 20% Off!</p>
-        </section>
+            {% empty %}
+            <p class="text-center">No products found matching your criteria.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Flash Notification -->
+        <p class="flash-notification text-center mt-4">Limited Offer: 20% Off!</p>
     </main>
 
     <!-- Footer -->
