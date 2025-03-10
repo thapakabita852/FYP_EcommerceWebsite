@@ -1,10 +1,106 @@
-<!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessories - A&K Accessories And Closet</title>
+    <!-- Bootstrap and Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <!-- Brand Logo -->
+                <a class="navbar-brand" href="{% url 'products:landing_page' %}">A&K</a>
+                <!-- Navigation Links -->
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:clothing' %}">Clothing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:accessories' %}">Accessories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:eco_friendly' %}">ECO-Friendly</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
+    <main class="container my-5">
+        <section id="accessories" class="category">
+            <h2 class="text-center">Accessories</h2>
+            <!-- Filters -->
+            <div class="filters text-center my-3">
+                <label>Color: <input type="color"></label>
+                <label>Type:
+                    <select>
+                        <option>Necklaces</option>
+                        <option>Earrings</option>
+                        <option>Watches</option>
+                    </select>
+                </label>
+            </div>
+            <!-- Product Cards -->
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card h-100">
+                        <!-- Product Image -->
+                        <img src="{% static 'images/accessory1.jpg' %}" class="card-img-top" alt="Gold Necklace">
+                        <div class="card-body">
+                            <!-- Product Title -->
+                            <h5 class="card-title">Gold Necklace</h5>
+                            <!-- Product Description -->
+                            <p class="card-text">Elegant gold necklace perfect for special occasions.</p>
+                            <!-- Buttons -->
+                            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
+                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <!-- Product Image -->
+                        <img src="{% static 'images/accessory2.jpg' %}" class="card-img-top" alt="Sunglasses">
+                        <div class="card-body">
+                            <!-- Product Title -->
+                            <h5 class="card-title">Sunglasses</h5>
+                            <!-- Product Description -->
+                            <p class="card-text">Stylish sunglasses for a sunny day.</p>
+                            <!-- Buttons -->
+                            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
+                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <!-- Product Image -->
+                        <img src="{% static 'images/accessory3.jpg' %}" class="card-img-top" alt="Wrist Watch">
+                        <div class="card-body">
+                            <!-- Product Title -->
+                            <h5 class="card-title">Wrist Watch</h5>
+                            <!-- Product Description -->
+                            <p class="card-text">Stylish wristwatch with a sleek design.</p>
+                            <!-- Buttons -->
+                            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
+                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Flash Notification -->
+            <p class="flash-notification text-center mt-4">Limited Offer: Buy 1 Get 1 Free on Accessories!</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-section text-center py-4">
+        <p>&copy; 2025 A&K Accessories And Closet</p>
+    </footer>
 </body>
 </html>
