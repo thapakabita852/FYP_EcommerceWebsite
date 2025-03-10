@@ -162,7 +162,7 @@
         </div>
       </section>
 
-      <!-- Trending Products Section -->
+     <!-- Trending Products Section -->
       <section class="container trending-section my-5">
   <h2 class="section-title">Trending Products</h2>
   <div class="trending-products">
@@ -175,7 +175,7 @@
             <img src="{% static 'images/default.png' %}" alt="Default Image">
           {% endif %}
           <h2>{{ product.title }}</h2>
-          <p>Rs.{{ product.price }}</p>
+          <p>${{ product.price }}</p>
           <a href="{% if user.is_authenticated %}{% url 'cart:add_to_cart' product.id %}{% else %}javascript:void(0);{% endif %}"
              class="btn {% if not user.is_authenticated %}requires-login{% endif %}">
             Add to Cart
