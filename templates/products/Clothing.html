@@ -138,25 +138,28 @@
             </div>
         </form>
 
-        <!-- Product Grid -->
-        <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
-            {% for product in products %}
-            <div class="col">
-                <div class="card h-100">
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.title }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
-                        <p class="card-text"><strong>${{ product.price }}</strong></p>
-                        <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
-                        <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <p class="text-center">No products found matching your criteria.</p>
-            {% endfor %}
+       {% for product in products %}
+<div class="col">
+    <div class="card h-100">
+        <!-- Product Image -->
+        {% if product.image %}
+        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+        {% else %}
+        <img src="{% static 'images/default-image.jpg' %}" class="card-img-top" alt="No image available">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <p class="card-text"><strong>${{ product.price }}</strong></p>
+            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
+            <button class="btn btn-primary add-to-cart">Add to Cart</button>
         </div>
+    </div>
+</div>
+{% empty %}
+<p class="text-center">No products found matching your criteria.</p>
+{% endfor %}
+
 
         <!-- Flash Notification -->
         <p class="flash-notification text-center mt-4">Limited Offer: 20% Off!</p>
