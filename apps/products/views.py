@@ -7,24 +7,25 @@ def landing_page(request):
     if category:
         products = Product.objects.filter(category=category)
     else:
-        products = Product.objects.all()  # Correct this line to get all products
+        products = Product.objects.all()
 
     # Pagination
-    paginator = Paginator(products, 10)  # Show 10 products per page
+    paginator = Paginator(products, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Fetch trending products
-    trending_products = Product.objects.filter(sales_count__gt=0).order_by('-sales_count')[:6]
+    # ✅ Select products that are **manually** marked as trending
+    trending_products = Product.objects.filter(is_trending=True).order_by('-created_at')[:6]
+
+    # Optional: If no trending products exist, return None (or handle differently)
     if not trending_products.exists():
-        trending_products = Product.objects.all().order_by('-id')[:6]
+        trending_products = None  # Or remove this line if you want an empty section
 
     context = {
         'trending_products': trending_products,
         'page_obj': page_obj,
     }
     return render(request, 'landing.html', context)
-
 
 def accessories_view(request):
     products = Product.objects.filter(category='accessories')  # Example query
