@@ -14,7 +14,7 @@ class Product(models.Model):
     )
     clothing_type = models.CharField(
         max_length=50,
-        choices=[('casual', 'Casual'), ('formal', 'Formal'), ('sporty', 'Sporty'), ('boho', 'Boho'), ('jackets', 'Jackets')],
+        choices=[('casual', 'Casual'), ('formal', 'Formal'), ('sporty', 'Sporty'), ('Party Wears', 'Party Wears'), ('jackets', 'Jackets')],
         blank=True,
         null=True
     )
@@ -32,7 +32,7 @@ class Product(models.Model):
     )
     style = models.CharField(
         max_length=50,
-        choices=[('casual', 'Casual'), ('formal', 'Formal'), ('sporty', 'Sporty'), ('boho', 'Boho')],
+        choices=[('casual', 'Casual'), ('formal', 'Formal'), ('sporty', 'Sporty'), ('Party Wears', 'Party Wears')],
         default='casual'  # Default style
     )
     color = models.CharField(max_length=7, blank=True, null=True, default=None)  # Allow blank and null
