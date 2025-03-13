@@ -120,7 +120,7 @@
     </select>
 </div>
 
-                <!-- Body Fit -->
+                <!-- BoFdy Fit -->
                 <div class="col-md-3">
                     <label for="body_fit">Body Fit:</label>
                     <select name="body_fit" id="body_fit" class="form-control">
@@ -150,7 +150,7 @@
         <div class="card-body">
             <h5 class="card-title">{{ product.name }}</h5>
             <p class="card-text">{{ product.description }}</p>
-            <p class="card-text"><strong>${{ product.price }}</strong></p>
+            <p class="card-text"><strong>Rs.{{ product.price }}</strong></p>
             <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
             <button class="btn btn-primary add-to-cart">Add to Cart</button>
         </div>
