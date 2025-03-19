@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import login_required
 from apps.products.models import Product
 from .models import Cart, CartItem
 
+from django.http import JsonResponse
+
+from .. import products
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -45,3 +48,24 @@ def remove_from_cart(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
     cart_item.delete()
     return redirect('cart:view_cart')
+
+@login_required
+def get_cart_count(request):
+    cart_count = 0
+    cart = Cart.objects.filter(user=request.user).first()
+    if cart:
+        cart_count = cart.items.count()
+    return JsonResponse({'cart_count': cart_count})
+
+def clothing_view(request):
+    cart_count = 0
+    if request.user.is_authenticated:
+        cart = Cart.objects.filter(user=request.user).first()
+        if cart:
+            cart_count = cart.items.count()
+    # Fetch products and other context data
+    context = {
+        'cart_count': cart_count,
+        'products': products,  # Add your products here
+    }
+    return render(request, 'products:clothing.html', context)
