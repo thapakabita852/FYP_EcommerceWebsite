@@ -16,18 +16,18 @@
         <div class="container">
           <!-- Left Section: Brand and Primary Links -->
           <div class="d-flex align-items-center">
-            <a class="navbar-brand" href="{% url 'products:landing_page' %}">
+            <a class="navbar-brand" href="{% url 'accounts:dashboard' %}" >
               A&K
             </a>
             <ul class="navbar-nav ms-3">
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'products:landing_page' %}?category=clothing">Clothing</a>
+                <a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'products:landing_page' %}?category=accessories">Accessories</a>
+                <a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'products:landing_page' %}?category=eco-friendly">ECO-Friendly</a>
+                <a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco_friendly">ECO-Friendly</a>
               </li>
             </ul>
           </div>
