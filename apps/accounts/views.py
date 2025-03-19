@@ -181,3 +181,51 @@ def profile_view(request):
     # Fetch orders for the current user
     orders = Order.objects.filter(user=request.user).order_by('-date')
     return render(request, 'accounts/profile.html', {'profile': profile, 'orders': orders})
+
+def password_reset_view(request):
+    """Display the password reset form"""
+    return render(request, 'accounts/password_reset.html', {'username_verified': False})
+
+
+def password_reset_confirm(request):
+    """Process the password reset request"""
+    if request.method == 'POST':
+        username = request.POST.get('username')
+
+        # Check if we're in the verification step or password reset step
+        if 'new_password' in request.POST:
+            # We're in the password reset step
+            new_password = request.POST.get('new_password')
+            confirm_password = request.POST.get('confirm_password')
+
+            try:
+                user = User.objects.get(username=username)
+
+                if new_password == confirm_password:
+                    user.set_password(new_password)
+                    user.save()
+                    messages.success(request, "Your password has been successfully reset. You can now log in.")
+                    return redirect('accounts:login')
+                else:
+                    messages.error(request, "Passwords do not match.")
+                    return render(request, 'accounts/password_reset.html', {
+                        'username_verified': True,
+                        'username': username
+                    })
+            except User.DoesNotExist:
+                messages.error(request, "User does not exist.")
+                return redirect('accounts:password_reset')
+        else:
+            # We're in the username verification step
+            try:
+                user = User.objects.get(username=username)
+                # Username exists, show the password reset form
+                return render(request, 'accounts/password_reset.html', {
+                    'username_verified': True,
+                    'username': username
+                })
+            except User.DoesNotExist:
+                messages.error(request, "User does not exist.")
+                return redirect('accounts:password_reset')
+
+    return redirect('accounts:password_reset')
