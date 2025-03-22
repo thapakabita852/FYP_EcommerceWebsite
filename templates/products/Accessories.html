@@ -1,106 +1,157 @@
 {% load static %}
+
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Accessories - A&K Accessories And Closet</title>
-    <!-- Bootstrap and Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="{% static 'css/explore.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <script src="{% static 'js/explore.js' %}"></script>
+  </head>
+
+  <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
-                <!-- Brand Logo -->
-                <a class="navbar-brand" href="{% url 'accounts:dashboard' %}">A&K</a>
-                <!-- Navigation Links -->
-                <ul class="navbar-nav ms-3">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'products:clothing' %}">Clothing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'products:accessories' %}">Accessories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'products:eco_friendly' %}">ECO-Friendly</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+      <nav class="navbar">
+        <div class="container">
+          <div class="navbar-brand">
+            <a href="{% url 'accounts:dashboard' %}"><h1>A&K</h1></a>
+          </div>
+          <div class="navbar-menu">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="{% url 'products:clothing' %}">Clothing</a></li>
+              <li class="nav-item active"><a class="nav-link" href="{% url 'products:accessories' %}">Accessories</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'products:eco_friendly' %}">ECO-Friendly</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </header>
 
-    <main class="container my-5">
-        <section id="accessories" class="category">
-            <h2 class="text-center">Accessories</h2>
-            <!-- Filters -->
-            <div class="filters text-center my-3">
-                <label>Color: <input type="color"></label>
-                <label>Type:
-                    <select>
-                        <option>Necklaces</option>
-                        <option>Earrings</option>
-                        <option>Watches</option>
-                    </select>
-                </label>
+    <section class="hero">
+      <div class="container">
+        <h2>Accessories with Style</h2>
+        <p>Explore our premium accessories collection</p>
+      </div>
+    </section>
+
+    <main class="product-section">
+      <div class="container">
+        <div class="filter-toggle">
+          <button id="filterToggleBtn"><i class="fas fa-filter"></i> Filter & Sort</button>
+        </div>
+
+        <div class="content-grid">
+          <aside class="filters-sidebar">
+            <div class="filters-header">
+              <h3>Filters</h3>
+              <button class="close-filters"><i class="fas fa-times"></i></button>
             </div>
-            <!-- Product Cards -->
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <div class="col">
-                    <div class="card h-100">
-                        <!-- Product Image -->
-                        <img src="{% static 'images/accessory1.jpg' %}" class="card-img-top" alt="Gold Necklace">
-                        <div class="card-body">
-                            <!-- Product Title -->
-                            <h5 class="card-title">Gold Necklace</h5>
-                            <!-- Product Description -->
-                            <p class="card-text">Elegant gold necklace perfect for special occasions.</p>
-                            <!-- Buttons -->
-                            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
-                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                        </div>
-                    </div>
+            <form method="GET" action="{% url 'products:accessories' %}" class="filters-form">
+
+              <div class="filter-group">
+                <h4>Sort By</h4>
+                <select name="sort_by">
+                  <option value="default">Default</option>
+                  <option value="price_low">Price: Low to High</option>
+                  <option value="price_high">Price: High to Low</option>
+                  <option value="newest">Newest Arrivals</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <h4>Category</h4>
+                <select name="category">
+                  <option value="">All</option>
+                  <option value="necklaces">Necklaces</option>
+                  <option value="earrings">Earrings</option>
+                </select>
+              </div>
+
+              <!-- Necklace Type Filter -->
+              <div class="filter-group" id="necklace-type-group" style="display:none;">
+                <h4>Type of Necklace</h4>
+                <select name="necklace_type">
+                  <option value="">All Types</option>
+                  <option value="choker">Chokers</option>
+                  <option value="pendant">Pendants</option>
+                  <option value="chain">Chains</option>
+                </select>
+              </div>
+
+              <!-- Earring Type Filter -->
+              <div class="filter-group" id="earring-type-group" style="display:none;">
+                <h4>Type of Earring</h4>
+                <select name="earring_type">
+                  <option value="">All Types</option>
+                  <option value="stud">Studs</option>
+                  <option value="hoop">Hoops</option>
+                  <option value="drop">Drop Earrings</option>
+                </select>
+              </div>
+
+              <div class="filter-actions">
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                <button type="reset" class="btn btn-secondary">Clear All</button>
+              </div>
+            </form>
+          </aside>
+
+          <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+              <div class="product-image">
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" />
+                <div class="product-actions">
+                  <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                  <button class="quickview-btn"><i class="fas fa-eye"></i></button>
                 </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <!-- Product Image -->
-                        <img src="{% static 'images/accessory2.jpg' %}" class="card-img-top" alt="Sunglasses">
-                        <div class="card-body">
-                            <!-- Product Title -->
-                            <h5 class="card-title">Sunglasses</h5>
-                            <!-- Product Description -->
-                            <p class="card-text">Stylish sunglasses for a sunny day.</p>
-                            <!-- Buttons -->
-                            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
-                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <!-- Product Image -->
-                        <img src="{% static 'images/accessory3.jpg' %}" class="card-img-top" alt="Wrist Watch">
-                        <div class="card-body">
-                            <!-- Product Title -->
-                            <h5 class="card-title">Wrist Watch</h5>
-                            <!-- Product Description -->
-                            <p class="card-text">Stylish wristwatch with a sleek design.</p>
-                            <!-- Buttons -->
-                            <button class="btn btn-outline-primary wishlist">Add to Wishlist</button>
-                            <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
+              </div>
+              <div class="product-info">
+                <h3>{{ product.title }}</h3>
+                <p class="price">Rs.{{ product.price }}</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+              </div>
             </div>
-            <!-- Flash Notification -->
-            <p class="flash-notification text-center mt-4">Limited Offer: Buy 1 Get 1 Free on Accessories!</p>
-        </section>
+            {% empty %}
+            <div class="no-products">
+              <p>No accessories available at the moment.</p>
+              <button onclick="resetFilters()">Clear Filters</button>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer-section text-center py-4">
-        <p>&copy; 2025 A&K Accessories And Closet</p>
-    </footer>
-</body>
+    <script>
+      // Show appropriate filter based on selected category
+      const categorySelect = document.querySelector('[name="category"]');
+      categorySelect.addEventListener('change', function() {
+        const necklaceTypeGroup = document.getElementById('necklace-type-group');
+        const earringTypeGroup = document.getElementById('earring-type-group');
+
+        if (categorySelect.value === 'necklaces') {
+          necklaceTypeGroup.style.display = 'block';
+          earringTypeGroup.style.display = 'none';
+        } else if (categorySelect.value === 'earrings') {
+          earringTypeGroup.style.display = 'block';
+          necklaceTypeGroup.style.display = 'none';
+        } else {
+          necklaceTypeGroup.style.display = 'none';
+          earringTypeGroup.style.display = 'none';
+        }
+      });
+
+      // Trigger change event to apply filter visibility on page load
+      categorySelect.dispatchEvent(new Event('change'));
+
+      function resetFilters() {
+        // Reset the form fields to their default values
+        document.querySelector('.filters-form').reset();
+        categorySelect.dispatchEvent(new Event('change')); // Reset visibility of filters
+        window.location.href = "{% url 'products:accessories' %}";
+      }
+    </script>
+  </body>
 </html>
