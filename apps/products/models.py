@@ -102,15 +102,16 @@ class Product(models.Model):
 
     # 🌱 Material (Only for Eco-Friendly Products)
     material = models.CharField(
-        max_length=50,
-        choices=[
-            ('bamboo', 'Bamboo'),
-            ('recycled_plastic', 'Recycled Plastic'),
-            ('organic_cotton', 'Organic Cotton')
-        ],
-        blank=True,
-        null=True
-    )
+    max_length=50,
+    choices=[
+        ('vegan_leather', 'Vegan Leather'),
+        ('organic_cotton', 'Organic Cotton'),
+        ('hemp', 'Hemp'),
+        ('bamboo_cotton', 'Bamboo Cotton')
+    ],
+    blank=True,
+    null=True
+)
 
     # 🌱 Sustainability Level (Only for Eco-Friendly Products)
     sustainability_level = models.CharField(
@@ -132,5 +133,5 @@ class Product(models.Model):
         description = models.TextField()
         team_image = models.ImageField(upload_to='about_us_images/', null=True, blank=True)
 
-    def __str__(self):
+    def str(self):
         return self.title

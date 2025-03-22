@@ -69,3 +69,32 @@ def clothing_view(request):
         'products': products,  # Add your products here
     }
     return render(request, 'products:clothing.html', context)
+
+@login_required
+def accessories_view(request):
+    cart_count = 0
+    if request.user.is_authenticated:
+        cart = Cart.objects.filter(user=request.user).first()
+        if cart:
+            cart_count = cart.items.count()
+    # Fetch products and other context data
+    context = {
+        'cart_count': cart_count,
+        'products': products,  # Add your products here
+    }
+    return render(request, 'products/accessories.html', context)
+
+@login_required
+def eco_friendly_view(request):
+    cart_count = 0
+    if request.user.is_authenticated:
+        cart = Cart.objects.filter(user=request.user).first()
+        if cart:
+            cart_count = cart.items.count()
+    # Fetch eco-friendly products
+    products = Product.objects.filter(category='eco_friendly')
+    context = {
+        'cart_count': cart_count,
+        'products': products,
+    }
+    return render(request, 'products/eco_friendly.html', context)

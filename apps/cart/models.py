@@ -4,6 +4,7 @@ from apps.products.models import Product
 from decimal import Decimal
 
 class Cart(models.Model):
+    objects = None
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
