@@ -27,13 +27,57 @@ def landing_page(request):
     }
     return render(request, 'landing.html', context)
 
-def accessories_view(request):
-    products = Product.objects.filter(category='accessories')  # Example query
-    return render(request, 'products/accessories.html', {'products': products})
 
 def eco_friendly_view(request):
-    products = Product.objects.filter(category='eco_friendly')  # Example query
+    products = Product.objects.filter(category="eco_friendly")  # Base QuerySet
+
+    # Get filter values from the GET request
+    sort_by = request.GET.get('sort_by')
+    category = request.GET.get('category')
+    clothing_type = request.GET.get('clothing_type')
+    size = request.GET.getlist('size')  # Multiple selections
+    sale_new = request.GET.get('sale_new')
+    style = request.GET.get('style')
+    color = request.GET.get('color')
+    body_fit = request.GET.get('body_fit')
+
+    # 🌱 New Filters for Eco-Friendly Products
+    material = request.GET.get('material')
+    sustainability_level = request.GET.get('sustainability_level')
+
+    # Apply filters
+    if category:
+        products = products.filter(title__icontains=category)
+    if clothing_type:
+        products = products.filter(clothing_type=clothing_type)
+    if size:
+        products = products.filter(size__in=size)
+    if sale_new:
+        products = products.filter(sale_new=sale_new)
+    if style:
+        products = products.filter(style=style)
+    if color:
+        products = products.filter(color=color)
+    if body_fit:
+        products = products.filter(body_fit=body_fit)
+
+    # 🌱 Apply Eco-Friendly Filters
+    if material:
+        products = products.filter(material=material)
+    if sustainability_level:
+        products = products.filter(sustainability_level=sustainability_level)
+
+    # Sorting products
+    if sort_by == 'price_low':
+        products = products.order_by('price')
+    elif sort_by == 'price_high':
+        products = products.order_by('-price')
+    elif sort_by == 'newest':
+        products = products.order_by('-created_at')
+
     return render(request, 'products/eco_friendly.html', {'products': products})
+
+
 
 
 def clothing_view(request):
@@ -74,4 +118,64 @@ def clothing_view(request):
     # Render the filtered products to the template
     return render(request, 'products/clothing.html', {'products': products})
 
+def accessories_view(request):
+    products = Product.objects.filter(category='accessories')
+
+    # Sorting logic
+    sort_by = request.GET.get('sort_by', 'default')
+    if sort_by == 'price_low':
+        products = products.order_by('price')
+    elif sort_by == 'price_high':
+        products = products.order_by('-price')
+    elif sort_by == 'newest':
+        products = products.order_by('-created_at')
+
+    category = request.GET.get('category')
+    if category:
+        products = products.filter(category=category)
+
+    # Filter based on Necklace Type
+    necklace_type = request.GET.get('necklace_type')
+    if category == 'necklaces' and necklace_type:
+        products = products.filter(necklace_type=necklace_type)
+
+    # Filter based on Earring Type
+    earring_type = request.GET.get('earring_type')
+    if category == 'earrings' and earring_type:
+        products = products.filter(earring_type=earring_type)
+
+    # Filter by Color
+    color = request.GET.get('color')
+    if color:
+        products = products.filter(color=color)
+
+    return render(request, 'products/accessories.html', {'products': products})
+
+def about_us_view(request):
+    return render(request, 'products/about_us.html')
+
+
+# products/views.py
+from django.core.paginator import Paginator
+from django.shortcuts import render
+from .models import Product
+
+
+def shop_now(request):
+    category = request.GET.get('category', 'all')
+    search_query = request.GET.get('search', '')
+
+    products = Product.objects.all()
+
+    if category != 'all':
+        products = products.filter(category=category)
+
+    if search_query:
+        products = products.filter(name__icontains=search_query)
+
+    paginator = Paginator(products, 9)  # Show 9 products per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'products/shop_now.html', {'products': page_obj})
 
