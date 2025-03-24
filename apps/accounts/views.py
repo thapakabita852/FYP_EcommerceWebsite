@@ -1,3 +1,4 @@
+
 import re
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
@@ -6,11 +7,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Profile  # Make sure to import Profile
-from apps.orders.models import Order  # import the Order model
+from .models import Profile
+from apps.orders.models import Order
 from apps.products.models import Product
-
-
+from django.core.validators import validate_email
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.conf import settings
+from django.utils.encoding import force_str
 
 def auth_view(request):
     return render(request, 'accounts/login_signup.html')
@@ -44,16 +51,21 @@ def is_valid_password(password):
         return "Password must include at least one symbol."
     if len(set(password)) < len(password):
         return "Password must not contain duplicate characters."
-    if re.search(r'(?:abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz|123|234|345|456|567|678|789|890)', password, re.IGNORECASE):
+    if re.search(
+            r'(?:abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz|123|234|345|456|567|678|789|890)',
+            password, re.IGNORECASE):
         return "Password must not contain sequential characters."
     return None
+
 
 def signup_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
+        email = request.POST.get('email')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
 
+        # Validation checks
         if password != confirm_password:
             messages.error(request, 'Passwords do not match')
             return redirect('accounts:auth')
@@ -73,36 +85,39 @@ def signup_view(request):
             messages.error(request, 'Username already exists')
             return redirect('accounts:auth')
 
-        user = User.objects.create_user(username=name, password=password)
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already in use')
+            return redirect('accounts:auth')
 
-        messages.success(request, "Account created successfully! Please log in.")
+        # Create user without email verification
+        user = User.objects.create_user(
+            username=name,
+            email=email,
+            password=password
+        )
+
+        messages.success(request, "Account created successfully! You can now log in.")
         return redirect('accounts:login')
 
-    return redirect('accounts:login_signup')
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {
-            'min_length': 8,  # Set a minimum password length
-        }
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-
-
-def logout_view(request):
-    logout(request)
     return redirect('accounts:auth')
+
+
+def verify_email(request, uidb64, token):
+    try:
+        uid = force_bytes(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        profile = user.profile
+        profile.email_verified = True
+        profile.save()
+        messages.success(request, "Email verified successfully! You can now log in.")
+        return redirect('accounts:login')
+    else:
+        messages.error(request, "Invalid verification link.")
+        return redirect('accounts:auth')
 
 
 @login_required
@@ -122,12 +137,14 @@ def dashboard_view(request):
     })
 
 
-
 @login_required
 def profile_view(request):
-    # Retrieve or create the profile for the logged-in user
     profile, created = Profile.objects.get_or_create(user=request.user)
-    return render(request, 'accounts/profile.html', {'profile': profile})
+    orders = Order.objects.filter(user=request.user).order_by('-date')
+    return render(request, 'accounts/profile.html', {
+        'profile': profile,
+        'orders': orders
+    })
 
 
 @login_required
@@ -174,58 +191,6 @@ def change_password(request):
     return render(request, 'accounts/change_password.html')
 
 
-@login_required
-def profile_view(request):
-    # Get or create the profile for the logged-in user
-    profile, created = Profile.objects.get_or_create(user=request.user)
-    # Fetch orders for the current user
-    orders = Order.objects.filter(user=request.user).order_by('-date')
-    return render(request, 'accounts/profile.html', {'profile': profile, 'orders': orders})
-
-def password_reset_view(request):
-    """Display the password reset form"""
-    return render(request, 'accounts/password_reset.html', {'username_verified': False})
-
-
-def password_reset_confirm(request):
-    """Process the password reset request"""
-    if request.method == 'POST':
-        username = request.POST.get('username')
-
-        # Check if we're in the verification step or password reset step
-        if 'new_password' in request.POST:
-            # We're in the password reset step
-            new_password = request.POST.get('new_password')
-            confirm_password = request.POST.get('confirm_password')
-
-            try:
-                user = User.objects.get(username=username)
-
-                if new_password == confirm_password:
-                    user.set_password(new_password)
-                    user.save()
-                    messages.success(request, "Your password has been successfully reset. You can now log in.")
-                    return redirect('accounts:login')
-                else:
-                    messages.error(request, "Passwords do not match.")
-                    return render(request, 'accounts/password_reset.html', {
-                        'username_verified': True,
-                        'username': username
-                    })
-            except User.DoesNotExist:
-                messages.error(request, "User does not exist.")
-                return redirect('accounts:password_reset')
-        else:
-            # We're in the username verification step
-            try:
-                user = User.objects.get(username=username)
-                # Username exists, show the password reset form
-                return render(request, 'accounts/password_reset.html', {
-                    'username_verified': True,
-                    'username': username
-                })
-            except User.DoesNotExist:
-                messages.error(request, "User does not exist.")
-                return redirect('accounts:password_reset')
-
-    return redirect('accounts:password_reset')
+def logout_view(request):
+    logout(request)
+    return redirect('accounts:auth')
