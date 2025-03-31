@@ -1,0 +1,133 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - A&K Accessories And Closet</title>
+    <link rel="stylesheet" href="{% static 'css/explore.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a href="{% url 'accounts:dashboard' %}">
+                        <h1>A&K</h1>
+                    </a>
+                </div>
+                <div class="navbar-menu">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'products:clothing' %}">Clothing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'products:accessories' %}">Accessories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'products:eco_friendly' %}">ECO-Friendly</a>
+                        </li>
+                    </ul>
+                    <a href="{% url 'wishlist:view_wishlist' %}" class="icon-link">
+                        <i class="fas fa-heart"></i>
+                        <span class="wishlist-count">{{ wishlist.items.count }}</span>
+                    </a>
+                    <a href="{% url 'cart:view_cart' %}" class="icon-link cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">{{ cart_count }}</span>
+                    </a>
+                    <a href="{% url 'accounts:logout' %}" class="icon-link">
+                        <i class="fas fa-sign-out"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="wishlist-section">
+        <div class="container">
+            <h2>My Wishlist</h2>
+            {% if wishlist.items.all %}
+                <div class="products-grid">
+                    {% for item in wishlist.items.all %}
+                    <div class="product-card">
+                        <div class="product-image">
+                            {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                            {% else %}
+                            <img src="{% static 'images/default-image.jpg' %}" alt="No image available">
+                            {% endif %}
+                            <div class="product-actions">
+                                <button class="action-btn remove-wishlist-btn"
+                                    onclick="removeFromWishlist('{% url 'wishlist:remove_from_wishlist' item.product.id %}')"
+                                    title="Remove from Wishlist">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="action-btn add-to-cart-btn"
+                                    onclick="addToCart('{% url 'cart:add_to_cart' item.product.id %}')"
+                                    title="Add to Cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">{{ item.product.title }}</h3>
+                            <p class="product-price">Rs.{{ item.product.price }}</p>
+                            <p class="product-description">{{ item.product.description }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-wishlist">
+                    <i class="far fa-heart"></i>
+                    <p>Your wishlist is empty</p>
+                    <a href="{% url 'products:clothing' %}" class="btn btn-primary">Start Shopping</a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        function removeFromWishlist(url) {
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'removed') {
+                    // Reload the page to update the wishlist
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function addToCart(url) {
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Product added to cart!');
+                } else {
+                    alert('Failed to add product to cart.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
