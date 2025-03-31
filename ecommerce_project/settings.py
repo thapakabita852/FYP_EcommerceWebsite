@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     'apps.products',
     'apps.accounts',
     'apps.cart',
-    'apps.orders'
+    'apps.orders',
+    'apps.wishlist',  # Added missing comma
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
