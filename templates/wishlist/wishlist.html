@@ -6,6 +6,79 @@
     <title>My Wishlist - A&K Accessories And Closet</title>
     <link rel="stylesheet" href="{% static 'css/explore.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
+        }
+
+        .notification i {
+            font-size: 18px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Product Card Styles */
+        .product-actions {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .action-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn i {
+            color: #333;
+            font-size: 14px;
+        }
+
+        .remove-wishlist-btn:hover i {
+            color: #e74c3c;
+        }
+
+        .add-to-cart-btn:hover i {
+            color: #27ae60;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -13,7 +86,8 @@
             <div class="container">
                 <div class="navbar-brand">
                     <a href="{% url 'accounts:dashboard' %}">
-                        <h1>A&K</h1>
+                        <a class="navbar-brand" href="{% url 'accounts:dashboard' %}"
+              style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #ff5252 !important; letter-spacing: 1px;">A&K</a>
                     </a>
                 </div>
                 <div class="navbar-menu">
@@ -44,6 +118,9 @@
         </nav>
     </header>
 
+    <!-- Notification Container -->
+    <div id="notification-container" style="position: fixed; top: 80px; right: 20px; z-index: 1000;"></div>
+
     <main class="wishlist-section">
         <div class="container">
             <h2>My Wishlist</h2>
@@ -53,9 +130,9 @@
                     <div class="product-card">
                         <div class="product-image">
                             {% if item.product.image %}
-                            <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
                             {% else %}
-                            <img src="{% static 'images/default-image.jpg' %}" alt="No image available">
+                                <img src="{% static 'images/default-image.jpg' %}" alt="No image available">
                             {% endif %}
                             <div class="product-actions">
                                 <button class="action-btn remove-wishlist-btn"
@@ -64,7 +141,7 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                                 <button class="action-btn add-to-cart-btn"
-                                    onclick="addToCart('{% url 'cart:add_to_cart' item.product.id %}')"
+                                    onclick="addToCart('{% url 'cart:add_to_cart' item.product.id %}', '{{ item.product.title }}')"
                                     title="Add to Cart">
                                     <i class="fas fa-shopping-cart"></i>
                                 </button>
@@ -73,15 +150,15 @@
                         <div class="product-info">
                             <h3 class="product-title">{{ item.product.title }}</h3>
                             <p class="product-price">Rs.{{ item.product.price }}</p>
-                            <p class="product-description">{{ item.product.description }}</p>
+                            <p class="product-description">{{ item.product.description|truncatechars:100 }}</p>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             {% else %}
                 <div class="empty-wishlist">
-                    <i class="far fa-heart"></i>
-                    <p>Your wishlist is empty</p>
+                    <i class="far fa-heart" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+                    <p style="font-size: 18px; color: #666; margin-bottom: 20px;">Your wishlist is empty</p>
                     <a href="{% url 'products:clothing' %}" class="btn btn-primary">Start Shopping</a>
                 </div>
             {% endif %}
@@ -89,6 +166,23 @@
     </main>
 
     <script>
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(notification);
+
+            // Remove notification after animation completes
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
         function removeFromWishlist(url) {
             fetch(url, {
                 method: 'GET',
@@ -100,16 +194,20 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'removed') {
-                    // Reload the page to update the wishlist
-                    location.reload();
+                    showNotification('Removed from wishlist!');
+                    // Update wishlist count
+                    document.querySelector('.wishlist-count').textContent = data.wishlist_count;
+                    // Optionally remove the card from UI without reload
+                    // You would need to add a data-id attribute to product cards
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                showNotification('Failed to remove item', 'error');
             });
         }
 
-        function addToCart(url) {
+        function addToCart(url, productName) {
             fetch(url, {
                 method: 'GET',
                 headers: {
@@ -117,15 +215,20 @@
                     'X-CSRFToken': '{{ csrf_token }}',
                 },
             })
-            .then(response => {
-                if (response.ok) {
-                    alert('Product added to cart!');
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update cart count
+                    document.querySelector('.cart-count').textContent = data.cart_count;
+                    // Show notification with product name
+                    showNotification(`${productName} added to cart!`);
                 } else {
-                    alert('Failed to add product to cart.');
+                    showNotification(data.message || 'Failed to add to cart', 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                showNotification('Failed to add to cart', 'error');
             });
         }
     </script>

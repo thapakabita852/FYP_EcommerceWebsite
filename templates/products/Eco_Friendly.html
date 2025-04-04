@@ -24,7 +24,8 @@
         <div class="container">
           <div class="navbar-brand">
             <a href="{% url 'accounts:dashboard' %}">
-              <h1>A&K</h1>
+              <a class="navbar-brand" href="{% url 'accounts:dashboard' %}"
+                 style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #ff5252 !important; letter-spacing: 1px;">A&K</a>
             </a>
           </div>
           <div class="navbar-toggle">
@@ -50,7 +51,10 @@
                 >
               </li>
             </ul>
-              <a href="#" class="icon-link"><i class="fas fa-heart"></i></a>
+              <a href="#" class="icon-link">
+                <i class="fas fa-heart"></i>
+                <span class="wishlist-count">{% if wishlist_count %}{{ wishlist_count }}{% else %}0{% endif %}</span>
+              </a>
               <a href="{% url 'cart:view_cart' %}" class="icon-link cart-icon">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-count"
@@ -124,18 +128,6 @@
               </div>
 
               <div class="filter-group">
-                <h4>Clothing Type</h4>
-                <select name="clothing_type" id="clothing_type">
-                  <option value="">All</option>
-                  <option value="casual">Casual</option>
-                  <option value="formal">Formal</option>
-                  <option value="sporty">Sporty</option>
-                  <option value="party_wear">Party Wears</option>
-                  <option value="jackets">Jackets</option>
-                </select>
-              </div>
-
-              <div class="filter-group">
                 <h4>Size</h4>
                 <div class="size-options">
                   <label class="size-option">
@@ -192,10 +184,9 @@
                 />
                 {% endif %}
                 <div class="product-actions">
-                  <button
-                    class="action-btn wishlist-btn"
-                    title="Add to Wishlist"
-                  >
+                  <button class="action-btn wishlist-btn"
+                          onclick="toggleWishlist('{% url 'wishlist:add_to_wishlist' product.id %}')"
+                          title="Add to Wishlist">
                     <i class="far fa-heart"></i>
                   </button>
                   <button class="action-btn quickview-btn" title="Quick View">
@@ -284,6 +275,45 @@
           .catch((error) => {
             console.error("Error:", error);
           });
+      }
+
+      function toggleWishlist(url) {
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'added' || data.status === 'exists') {
+                updateWishlistCount();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+      }
+
+      function updateWishlistCount() {
+        fetch("{% url 'wishlist:get_wishlist_count' %}", {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const wishlistCountElement = document.querySelector(".wishlist-count");
+            if (wishlistCountElement) {
+                wishlistCountElement.textContent = data.wishlist_count;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
       }
     </script>
   </body>
