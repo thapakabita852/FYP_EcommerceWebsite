@@ -62,13 +62,23 @@ class Product(models.Model):
         null=True
     )
 
-    # Necklace Type (For Accessories)
+    subcategory = models.CharField(
+        max_length=50,
+        choices=[
+            ('necklaces', 'Necklaces'),
+            ('earrings', 'Earrings'),
+            # other accessory types
+        ],
+        blank=True,
+        null=True
+    )
+
     necklace_type = models.CharField(
         max_length=50,
         choices=[
-            ('choker', 'Choker'),
-            ('pendant', 'Pendant'),
-            ('chain', 'Chain')
+            ('choker', 'Chokers'),
+            ('pendant', 'Pendants'),
+            ('chain', 'Chains'),
         ],
         blank=True,
         null=True

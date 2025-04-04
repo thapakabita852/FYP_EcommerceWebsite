@@ -77,9 +77,6 @@ def eco_friendly_view(request):
 
     return render(request, 'products/eco_friendly.html', {'products': products})
 
-
-
-
 def clothing_view(request):
     # Initial query to get all clothing products
     products = Product.objects.filter(category="clothing")  # Base QuerySet
@@ -130,24 +127,25 @@ def accessories_view(request):
     elif sort_by == 'newest':
         products = products.order_by('-created_at')
 
-    category = request.GET.get('category')
-    if category:
-        products = products.filter(category=category)
+    # Filter based on Subcategory (necklaces/earrings)
+    subcategory = request.GET.get('subcategory')
+    if subcategory:
+        products = products.filter(subcategory=subcategory)
 
     # Filter based on Necklace Type
     necklace_type = request.GET.get('necklace_type')
-    if category == 'necklaces' and necklace_type:
+    if subcategory == 'necklaces' and necklace_type:
         products = products.filter(necklace_type=necklace_type)
 
     # Filter based on Earring Type
     earring_type = request.GET.get('earring_type')
-    if category == 'earrings' and earring_type:
+    if subcategory == 'earrings' and earring_type:
         products = products.filter(earring_type=earring_type)
 
     # Filter by Color
     color = request.GET.get('color')
     if color:
-        products = products.filter(color=color)
+        products = products.filter(accessory_color=color)
 
     return render(request, 'products/accessories.html', {'products': products})
 
