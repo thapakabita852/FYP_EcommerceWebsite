@@ -1,435 +1,485 @@
 {% load static %}
 
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accessories - A&K Accessories And Closet</title>
-    <link rel="stylesheet" href="{% static 'css/explore.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/explore.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-      .quickview-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-      }
+        .quickview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
 
-      .quickview-content {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        width: 300px;
-        position: relative;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      }
+        .quickview-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
 
-      .close-modal {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 20px;
-        cursor: pointer;
-      }
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
 
-      .modal-image {
-        width: 100%;
-        border-radius: 8px;
-        margin-bottom: 10px;
-      }
+        .modal-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
 
-      .modal-price {
-        font-size: 1.2rem;
-        color: #e91e63;
-        margin-bottom: 15px;
-      }
+        .modal-price {
+            font-size: 1.2rem;
+            color: #e91e63;
+            margin-bottom: 15px;
+        }
 
-      .add-to-cart-btn {
-        background: #e91e63;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
+        .add-to-cart-btn {
+            background: #e91e63;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-      /* Notification Styles */
-      .notification-container {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 9999;
-      }
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
 
-      .notification {
-        padding: 15px 20px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        color: white;
-        background-color: #4CAF50;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;
-        display: flex;
-        align-items: center;
-      }
+        .notification {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: white;
+            background-color: #4CAF50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;
+            display: flex;
+            align-items: center;
+        }
 
-      .notification.error {
-        background-color: #f44336;
-      }
+        .notification.error {
+            background-color: #f44336;
+        }
 
-      .notification.warning {
-        background-color: #ff9800;
-      }
+        .notification.warning {
+            background-color: #ff9800;
+        }
 
-      .notification i {
-        margin-right: 10px;
-      }
+        .notification i {
+            margin-right: 10px;
+        }
 
-      @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-      }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
 
-      @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-      }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .no-products {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .no-products p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #6c757d;
+        }
+
+        .no-products button {
+            background: #e91e63;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
-  </head>
-  <body>
-    <!-- Notification Container -->
+</head>
+<body>
     <div class="notification-container" id="notificationContainer"></div>
 
     <header>
-      <nav class="navbar">
-        <div class="container">
-          <div class="navbar-brand">
-           <a class="navbar-brand" href="{% url 'accounts:dashboard' %}"
-              style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #ff5252 !important; letter-spacing: 1px;">A&K</a>
-          </div>
-          <div class="navbar-menu">
-            <ul class="navbar-nav">
-              <li class="nav-item"><a class="nav-link" href="{% url 'products:clothing' %}">Clothing</a></li>
-              <li class="nav-item active"><a class="nav-link" href="{% url 'products:accessories' %}">Accessories</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'products:eco_friendly' %}">ECO-Friendly</a></li>
-            </ul>
-            <a href="{% url 'wishlist:view_wishlist' %}" class="icon-link"><i class="fas fa-heart"></i></a>
-            <a href="{% url 'cart:view_cart' %}" class="icon-link cart-icon">
-              <i class="fas fa-shopping-cart"></i>
-              <span class="cart-count">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
-            </a>
-            <a href="{% url 'accounts:logout' %}" class="icon-link">
-              <i class="fas fa-sign-out"></i>
-            </a>
-          </div>
-        </div>
-      </nav>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-brand" href="{% url 'accounts:dashboard' %}"
+                       style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #ff5252 !important; letter-spacing: 1px;">
+                        A&K
+                    </a>
+                </div>
+                <div class="navbar-menu">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'products:clothing' %}">Clothing</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="{% url 'products:accessories' %}">Accessories</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'products:eco_friendly' %}">ECO-Friendly</a></li>
+                    </ul>
+                    <a href="{% url 'wishlist:view_wishlist' %}" class="icon-link"><i class="fas fa-heart"></i></a>
+                    <a href="{% url 'cart:view_cart' %}" class="icon-link cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
+                    </a>
+                    <a href="{% url 'accounts:logout' %}" class="icon-link">
+                        <i class="fas fa-sign-out"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
     </header>
 
     <section class="hero">
-      <div class="container">
-        <h2>Accessories with Style</h2>
-        <p>Explore our premium accessories collection</p>
-      </div>
+        <div class="container">
+            <h2>Accessories with Style</h2>
+            <p>Explore our premium accessories collection</p>
+        </div>
     </section>
 
     <main class="product-section">
-      <div class="container">
-        <div class="filter-toggle">
-          <button id="filterToggleBtn"><i class="fas fa-filter"></i> Filter & Sort</button>
-        </div>
-
-        <div class="content-grid">
-          <aside class="filters-sidebar">
-            <div class="filters-header">
-              <h3>Filters</h3>
-              <button class="close-filters"><i class="fas fa-times"></i></button>
+        <div class="container">
+            <div class="filter-toggle">
+                <button id="filterToggleBtn"><i class="fas fa-filter"></i> Filter & Sort</button>
             </div>
-            <form method="GET" action="{% url 'products:accessories' %}" class="filters-form">
-              <div class="filter-group">
-                <h4>Sort By</h4>
-                <select name="sort_by">
-                  <option value="default">Default</option>
-                  <option value="price_low">Price: Low to High</option>
-                  <option value="price_high">Price: High to Low</option>
-                  <option value="newest">Newest Arrivals</option>
-                </select>
-              </div>
 
-              <div class="filter-group">
-                <h4>Category</h4>
-                <select name="category">
-                  <option value="">All</option>
-                  <option value="necklaces">Necklaces</option>
-                  <option value="earrings">Earrings</option>
-                </select>
-              </div>
+            <div class="content-grid">
+                <aside class="filters-sidebar">
+                    <div class="filters-header">
+                        <h3>Filters</h3>
+                        <button class="close-filters"><i class="fas fa-times"></i></button>
+                    </div>
+                    <form method="GET" action="{% url 'products:accessories' %}" class="filters-form">
+                        <div class="filter-group">
+                            <h4>Sort By</h4>
+                            <select name="sort_by">
+                                <option value="default" {% if request.GET.sort_by == 'default' %}selected{% endif %}>
+                                    Default
+                                </option>
+                                <option value="price_low" {% if request.GET.sort_by == 'price_low' %}selected{% endif %}>
+                                    Price: Low to High
+                                </option>
+                                <option value="price_high" {% if request.GET.sort_by == 'price_high' %}selected{% endif %}>
+                                    Price: High to Low
+                                </option>
+                                <option value="newest" {% if request.GET.sort_by == 'newest' %}selected{% endif %}>
+                                    Newest Arrivals
+                                </option>
+                            </select>
+                        </div>
 
-              <!-- Necklace Type Filter -->
-              <div class="filter-group" id="necklace-type-group" style="display:none;">
-                <h4>Type of Necklace</h4>
-                <select name="necklace_type">
-                  <option value="">All Types</option>
-                  <option value="choker">Chokers</option>
-                  <option value="pendant">Pendants</option>
-                  <option value="chain">Chains</option>
-                </select>
-              </div>
+                        <div class="filter-group">
+                            <h4>Category</h4>
+                            <select name="subcategory">
+                                <option value="">All</option>
+                                <option value="necklaces" {% if request.GET.subcategory == 'necklaces' %}selected{% endif %}>
+                                    Necklaces
+                                </option>
+                                <option value="earrings" {% if request.GET.subcategory == 'earrings' %}selected{% endif %}>
+                                    Earrings
+                                </option>
+                            </select>
+                        </div>
 
-              <!-- Earring Type Filter -->
-              <div class="filter-group" id="earring-type-group" style="display:none;">
-                <h4>Type of Earring</h4>
-                <select name="earring_type">
-                  <option value="">All Types</option>
-                  <option value="stud">Studs</option>
-                  <option value="hoop">Hoops</option>
-                  <option value="drop">Drop Earrings</option>
-                </select>
-              </div>
+                        <div class="filter-group" id="necklace-type-group" style="display:{% if request.GET.subcategory == 'necklaces' %}block{% else %}none{% endif %}">
+                            <h4>Type of Necklace</h4>
+                            <select name="necklace_type">
+                                <option value="">All Types</option>
+                                <option value="choker" {% if request.GET.necklace_type == 'choker' %}selected{% endif %}>
+                                    Chokers
+                                </option>
+                                <option value="pendant" {% if request.GET.necklace_type == 'pendant' %}selected{% endif %}>
+                                    Pendants
+                                </option>
+                                <option value="chain" {% if request.GET.necklace_type == 'chain' %}selected{% endif %}>
+                                    Chains
+                                </option>
+                            </select>
+                        </div>
 
-              <div class="filter-actions">
-                <button type="submit" class="btn btn-primary">Apply Filters</button>
-                <button type="reset" class="btn btn-secondary">Clear All</button>
-              </div>
-            </form>
-          </aside>
+                        <div class="filter-group" id="earring-type-group" style="display:{% if request.GET.subcategory == 'earrings' %}block{% else %}none{% endif %}">
+                            <h4>Type of Earring</h4>
+                            <select name="earring_type">
+                                <option value="">All Types</option>
+                                <option value="stud" {% if request.GET.earring_type == 'stud' %}selected{% endif %}>
+                                    Studs
+                                </option>
+                                <option value="hoop" {% if request.GET.earring_type == 'hoop' %}selected{% endif %}>
+                                    Hoops
+                                </option>
+                                <option value="drop" {% if request.GET.earring_type == 'drop' %}selected{% endif %}>
+                                    Drop Earrings
+                                </option>
+                            </select>
+                        </div>
 
-          <div class="products-grid">
-            {% for product in products %}
-            <div class="product-card">
-              <div class="product-image">
-                <img src="{{ product.image.url }}" alt="{{ product.title }}" />
-                <div class="product-actions">
-                  <button class="action-btn wishlist-btn"
-                      onclick="toggleWishlist('{% url 'wishlist:add_to_wishlist' product.id %}')"
-                      title="Add to Wishlist">
-                      <i class="far fa-heart"></i>
-                  </button>
-                  <button class="action-btn quickview-btn" title="Quick View">
-                    <i class="fas fa-eye"></i>
-                  </button>
+                        <div class="filter-actions">
+                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                            <a href="{% url 'products:accessories' %}" class="btn btn-secondary">Clear All</a>
+                        </div>
+                    </form>
+                </aside>
+
+                <div class="products-grid">
+                    {% for product in products %}
+                    <div class="product-card">
+                        <div class="product-image">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                            {% else %}
+                            <img src="{% static 'images/placeholder.jpg' %}" alt="No image available">
+                            {% endif %}
+                            <div class="product-actions">
+                                <button class="action-btn wishlist-btn"
+                                    onclick="toggleWishlist('{% url 'wishlist:add_to_wishlist' product.id %}')"
+                                    title="Add to Wishlist">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="action-btn quickview-btn" title="Quick View">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>{{ product.title }}</h3>
+                            <p class="price">Rs.{{ product.price }}</p>
+                            <button class="btn add-to-cart-btn"
+                                onclick="addToCart('{% url 'cart:add_to_cart' product.id %}')">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="no-products">
+                        <p>No accessories found matching your filters.</p>
+                        <button onclick="resetFilters()" class="btn btn-primary">Clear Filters</button>
+                    </div>
+                    {% endfor %}
                 </div>
-              </div>
-              <div class="product-info">
-                <h3>{{ product.title }}</h3>
-                <p class="price">Rs.{{ product.price }}</p>
-                <button
-                  class="btn add-to-cart-btn"
-                  onclick="addToCart('{% url 'cart:add_to_cart' product.id %}')"
-                >
-                  Add to Cart
-                </button>
-              </div>
             </div>
-            {% empty %}
-            <div class="no-products">
-              <p>No accessories available at the moment.</p>
-              <button onclick="resetFilters()">Clear Filters</button>
-            </div>
-            {% endfor %}
-          </div>
         </div>
-      </div>
     </main>
 
     <script>
-      // Notification function
-      function showNotification(message, type = 'success') {
-        const container = document.getElementById('notificationContainer');
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `
-          <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
-          ${message}
-        `;
-        container.appendChild(notification);
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                ${message}
+            `;
+            container.appendChild(notification);
 
-        // Remove notification after animation
-        setTimeout(() => {
-          notification.remove();
-        }, 3000);
-      }
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
 
-      function addToCart(url) {
-        fetch(url, {
-          method: "GET",
-          headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRFToken": "{{ csrf_token }}",
-          },
-        })
-          .then((response) => {
-            if (response.ok) {
-              showNotification('Item added to cart successfully!');
-              updateCartCount();
+        function addToCart(url) {
+            fetch(url, {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+            })
+            .then((response) => {
+                if (response.ok) {
+                    showNotification('Item added to cart successfully!');
+                    updateCartCount();
+                } else {
+                    showNotification('Failed to add item to cart', 'error');
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                showNotification('An error occurred', 'error');
+            });
+        }
+
+        function updateCartCount() {
+            fetch("{% url 'cart:get_cart_count' %}", {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                const cartCountElement = document.querySelector(".cart-count");
+                if (cartCountElement) {
+                    cartCountElement.textContent = data.cart_count;
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        }
+
+        function toggleWishlist(url) {
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'added') {
+                    showNotification('Item added to wishlist!');
+                    updateWishlistCount();
+                } else if (data.status === 'exists') {
+                    showNotification('Item already in wishlist', 'warning');
+                } else {
+                    showNotification('Failed to update wishlist', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('An error occurred', 'error');
+            });
+        }
+
+        function updateWishlistCount() {
+            fetch("{% url 'wishlist:get_wishlist_count' %}", {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                const wishlistCountElement = document.querySelector(".wishlist-count");
+                if (wishlistCountElement) {
+                    wishlistCountElement.textContent = data.wishlist_count;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function addToCartFromQuickView(title) {
+            const productCards = document.querySelectorAll('.product-card');
+            let addToCartUrl = '';
+
+            productCards.forEach(card => {
+                if (card.querySelector('h3').innerText === title) {
+                    addToCartUrl = card.querySelector('.add-to-cart-btn').getAttribute('onclick').match(/'([^']+)'/)[1];
+                }
+            });
+
+            if (addToCartUrl) {
+                addToCart(addToCartUrl);
+                document.querySelector(".quickview-modal").remove();
             } else {
-              showNotification('Failed to add item to cart', 'error');
+                showNotification('Could not add item to cart', 'error');
             }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            showNotification('An error occurred', 'error');
-          });
-      }
-
-      function updateCartCount() {
-        fetch("{% url 'cart:get_cart_count' %}", {
-          method: "GET",
-          headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRFToken": "{{ csrf_token }}",
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            const cartCountElement = document.querySelector(".cart-count");
-            if (cartCountElement) {
-              cartCountElement.textContent = data.cart_count;
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }
-
-      function toggleWishlist(url) {
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': '{{ csrf_token }}',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'added') {
-              showNotification('Item added to wishlist!');
-              updateWishlistCount();
-            } else if (data.status === 'exists') {
-              showNotification('Item already in wishlist', 'warning');
-            } else {
-              showNotification('Failed to update wishlist', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('An error occurred', 'error');
-        });
-      }
-
-      function updateWishlistCount() {
-        fetch("{% url 'wishlist:get_wishlist_count' %}", {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': '{{ csrf_token }}',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            const wishlistCountElement = document.querySelector(".wishlist-count");
-            if (wishlistCountElement) {
-                wishlistCountElement.textContent = data.wishlist_count;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-      }
-
-      function addToCartFromQuickView(title) {
-        const productCards = document.querySelectorAll('.product-card');
-        let addToCartUrl = '';
-
-        productCards.forEach(card => {
-          if (card.querySelector('h3').innerText === title) {
-            addToCartUrl = card.querySelector('.add-to-cart-btn').getAttribute('onclick').match(/'([^']+)'/)[1];
-          }
-        });
-
-        if (addToCartUrl) {
-          addToCart(addToCartUrl);
-          document.querySelector(".quickview-modal").remove();
-        } else {
-          showNotification('Could not add item to cart', 'error');
-        }
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        // Category filter change handler
-        const categoryFilter = document.querySelector('select[name="category"]');
-        const necklaceTypeGroup = document.getElementById('necklace-type-group');
-        const earringTypeGroup = document.getElementById('earring-type-group');
-
-        if (categoryFilter) {
-          categoryFilter.addEventListener('change', function() {
-            const selectedCategory = this.value;
-
-            // Hide both type filters initially
-            necklaceTypeGroup.style.display = 'none';
-            earringTypeGroup.style.display = 'none';
-
-            // Show the appropriate type filter based on selection
-            if (selectedCategory === 'necklaces') {
-              necklaceTypeGroup.style.display = 'block';
-            } else if (selectedCategory === 'earrings') {
-              earringTypeGroup.style.display = 'block';
-            }
-          });
         }
 
-        // Quick View functionality
-        const quickViewButtons = document.querySelectorAll(".quickview-btn");
-
-        quickViewButtons.forEach((button) => {
-          button.addEventListener("click", function () {
-            const productCard = this.closest(".product-card");
-            const productTitle = productCard.querySelector("h3").innerText;
-            const productImage = productCard.querySelector("img").src;
-            const productPrice = productCard.querySelector(".price").innerText;
-
-            // Create and show modal for Quick View
-            showQuickView(productTitle, productImage, productPrice);
-          });
-        });
-
-        function showQuickView(title, image, price) {
-          // Create the modal HTML dynamically
-          const modalHTML = `
-            <div class="quickview-modal">
-              <div class="quickview-content">
-                <span class="close-modal">&times;</span>
-                <img src="${image}" alt="${title}" class="modal-image"/>
-                <h3>${title}</h3>
-                <p class="modal-price">${price}</p>
-                <button class="add-to-cart-btn" onclick="addToCartFromQuickView('${title}')">Add to Cart</button>
-              </div>
-            </div>
-          `;
-
-          // Append modal to the body
-          document.body.insertAdjacentHTML("beforeend", modalHTML);
-
-          // Handle closing the modal
-          document.querySelector(".close-modal").addEventListener("click", function () {
-            document.querySelector(".quickview-modal").remove();
-          });
-
-          // Close modal when clicking outside the content
-          document.querySelector(".quickview-modal").addEventListener("click", function (event) {
-            if (event.target === this) {
-              this.remove();
-            }
-          });
+        function resetFilters() {
+            window.location.href = "{% url 'products:accessories' %}";
         }
-      });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterToggle = document.getElementById('filterToggleBtn');
+            const filtersSidebar = document.querySelector('.filters-sidebar');
+            const closeFilters = document.querySelector('.close-filters');
+
+            if (filterToggle && filtersSidebar) {
+                filterToggle.addEventListener('click', function() {
+                    filtersSidebar.classList.toggle('active');
+                });
+
+                closeFilters.addEventListener('click', function() {
+                    filtersSidebar.classList.remove('active');
+                });
+            }
+
+            const categoryFilter = document.querySelector('select[name="subcategory"]');
+            const necklaceTypeGroup = document.getElementById('necklace-type-group');
+            const earringTypeGroup = document.getElementById('earring-type-group');
+
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', function() {
+                    const selectedCategory = this.value;
+                    necklaceTypeGroup.style.display = 'none';
+                    earringTypeGroup.style.display = 'none';
+
+                    if (selectedCategory === 'necklaces') {
+                        necklaceTypeGroup.style.display = 'block';
+                    } else if (selectedCategory === 'earrings') {
+                        earringTypeGroup.style.display = 'block';
+                    }
+                });
+            }
+
+            const quickViewButtons = document.querySelectorAll(".quickview-btn");
+            quickViewButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    const productCard = this.closest(".product-card");
+                    const productTitle = productCard.querySelector("h3").innerText;
+                    const productImage = productCard.querySelector("img").src;
+                    const productPrice = productCard.querySelector(".price").innerText;
+
+                    const modalHTML = `
+                        <div class="quickview-modal">
+                            <div class="quickview-content">
+                                <span class="close-modal">&times;</span>
+                                <img src="${productImage}" alt="${productTitle}" class="modal-image"/>
+                                <h3>${productTitle}</h3>
+                                <p class="modal-price">${productPrice}</p>
+                                <button class="add-to-cart-btn" onclick="addToCartFromQuickView('${productTitle}')">Add to Cart</button>
+                            </div>
+                        </div>
+                    `;
+
+                    document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+                    document.querySelector(".close-modal").addEventListener("click", function () {
+                        document.querySelector(".quickview-modal").remove();
+                    });
+
+                    document.querySelector(".quickview-modal").addEventListener("click", function (event) {
+                        if (event.target === this) {
+                            this.remove();
+                        }
+                    });
+                });
+            });
+        });
     </script>
-  </body>
+</body>
 </html>

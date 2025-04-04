@@ -128,7 +128,7 @@ def accessories_view(request):
         products = products.order_by('-created_at')
 
     # Filter based on Subcategory (necklaces/earrings)
-    subcategory = request.GET.get('subcategory')
+    subcategory = request.GET.get('subcategory')  # Changed from 'category' to 'subcategory'
     if subcategory:
         products = products.filter(subcategory=subcategory)
 
