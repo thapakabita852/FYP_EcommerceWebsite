@@ -1,5 +1,4 @@
 {% load static %}
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -13,11 +12,12 @@
       :root {
         --primary-color: #ff7e7e;
         --primary-dark: #ff5252;
-        --secondary-color: #fef4f5;
+        --secondary-color: #ffe4e6;
+        --light-bg: #fff8f6;
+        --card-bg: #ffffff;
         --dark-text: #333333;
         --medium-text: #5c5c5c;
         --light-text: #777777;
-        --white: #ffffff;
         --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         --transition: all 0.3s ease;
       }
@@ -26,6 +26,7 @@
         font-family: 'Poppins', sans-serif;
         color: var(--medium-text);
         line-height: 1.7;
+        background-color: var(--light-bg);
         overflow-x: hidden;
       }
 
@@ -34,9 +35,9 @@
         color: var(--dark-text);
       }
 
-      /* Navbar styling */
+      /* Navbar styling - matching dash-style */
       .navbar {
-        background-color: var(--white);
+        background-color: var(--card-bg);
         box-shadow: var(--shadow);
         padding: 15px 0;
       }
@@ -81,6 +82,12 @@
         align-items: center;
         font-size: 0.9rem;
         margin: 0 10px;
+        transition: var(--transition);
+      }
+
+      .nav-icon-link:hover {
+        color: var(--primary-color);
+        transform: translateY(-2px);
       }
 
       .nav-icon-link i {
@@ -96,7 +103,7 @@
         position: absolute;
         top: -8px;
         right: -8px;
-        background-color: #e91e63;
+        background-color: var(--primary-dark);
         color: white;
         border-radius: 50%;
         padding: 2px 6px;
@@ -205,7 +212,7 @@
       .feature-box {
         flex: 1;
         min-width: 250px;
-        background: var(--white);
+        background: var(--card-bg);
         padding: 40px 30px;
         border-radius: 10px;
         text-align: center;
@@ -215,22 +222,32 @@
 
       .feature-box:hover {
         transform: translateY(-10px);
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .feature-box:hover h3,
+      .feature-box:hover p,
+      .feature-box:hover .feature-icon {
+        color: white;
       }
 
       .feature-icon {
         font-size: 2.5rem;
         color: var(--primary-color);
         margin-bottom: 20px;
+        transition: var(--transition);
       }
 
       .feature-box h3 {
         font-size: 1.5rem;
         margin-bottom: 15px;
+        transition: var(--transition);
       }
 
       /* Our Story Section */
       .our-story {
-        background: linear-gradient(135deg, var(--white) 0%, #fff9fa 100%);
+        background: linear-gradient(135deg, var(--card-bg) 0%, #fff9fa 100%);
         padding: 60px;
         border-radius: 15px;
         box-shadow: var(--shadow);
@@ -294,7 +311,7 @@
         border-radius: 50%;
         overflow: hidden;
         margin: 0 auto 20px;
-        border: 5px solid var(--white);
+        border: 5px solid var(--card-bg);
         box-shadow: var(--shadow);
       }
 
@@ -320,7 +337,7 @@
 
       /* Contact Info Section */
       .contact-info {
-        background: var(--white);
+        background: var(--card-bg);
         padding: 60px;
         border-radius: 15px;
         box-shadow: var(--shadow);
@@ -347,23 +364,25 @@
 
       .contact-method:hover {
         background: var(--primary-color);
-        color: var(--white);
+        color: white;
       }
 
       .contact-method:hover i,
       .contact-method:hover h3,
       .contact-method:hover a {
-        color: var(--white);
+        color: white;
       }
 
       .contact-method i {
         font-size: 2.5rem;
         color: var(--primary-color);
         margin-bottom: 20px;
+        transition: var(--transition);
       }
 
       .contact-method h3 {
         margin-bottom: 15px;
+        transition: var(--transition);
       }
 
       .contact-method a {
@@ -381,14 +400,21 @@
       .search-form .form-control {
         height: 40px;
         border-radius: 20px 0 0 20px;
+        border: 1px solid #ddd;
       }
 
       .search-form .btn {
         height: 40px;
         width: 40px;
-        background-color: #e91e63;
+        background-color: var(--primary-dark);
         color: white;
         border-radius: 0 20px 20px 0;
+        border: none;
+        transition: var(--transition);
+      }
+
+      .search-form .btn:hover {
+        background-color: var(--primary-color);
       }
 
       /* Animations */
