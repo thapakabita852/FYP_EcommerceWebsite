@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About Us - A&K Accessories And Closet</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/dash-style.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -35,12 +34,12 @@
         color: var(--dark-text);
       }
 
-      /* Navbar styling - matching dash-style */
-      .navbar {
-        background-color: var(--card-bg);
+            .navbar {
+        background-color: #ffe4e6;
         box-shadow: var(--shadow);
         padding: 15px 0;
       }
+
 
       .navbar-brand {
         font-family: 'Playfair Display', serif;
@@ -80,8 +79,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        font-size: 0.9rem;
-        margin: 0 10px;
+        font-size: 1.5rem;
+        margin: 5px;
         transition: var(--transition);
       }
 
@@ -483,54 +482,67 @@
   <body>
     <header>
       <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-          <!-- Left Section: Brand and Primary Links -->
-          <div class="d-flex align-items-center">
-            <a class="navbar-brand" href="{% url 'accounts:dashboard' %}">A&K</a>
-            <ul class="navbar-nav ms-3">
-              <li class="nav-item"><a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco_friendly">ECO-Friendly</a></li>
-            </ul>
-          </div>
+  <div class="container">
+    <!-- Left Section: Brand and Primary Links -->
+    <div class="d-flex align-items-center">
+      <a class="navbar-brand" href="{% url 'accounts:dashboard' %}">A&K</a>
+      <ul class="navbar-nav ms-3">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco_friendly">ECO-Friendly</a>
+        </li>
+      </ul>
+    </div>
 
-          <!-- Center Section: Search Bar -->
-          <div class="d-flex flex-grow-1 justify-content-center">
-            <form class="d-flex search-form" action="{% url 'products:landing_page' %}" method="GET">
-              <input
-                class="form-control"
-                type="search"
-                name="q"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button
-                class="btn"
-                type="submit"
-              >
-                <i class="fa fa-search"></i>
-              </button>
-            </form>
-          </div>
-            <a href="{% if user.is_authenticated %}{% url 'wishlist:view_wishlist' %}{% else %}javascript:void(0);{% endif %}"
-               class="nav-icon-link me-3 {% if not user.is_authenticated %}requires-login{% endif %}"
-               id="wishlist-link">
-              <i class="fa fa-heart"></i>
-              <span class="icon-text">Wishlist</span>
-              <span class="wishlist-count-badge" id="wishlist-count">{{ wishlist_count|default:0 }}</span>
-            </a>
-            <a href="{% url 'cart:view_cart' %}" class="nav-icon-link me-3">
-              <i class="fa fa-shopping-cart"></i>
-              <span class="icon-text">Cart</span>
-              <span class="badge" id="cart-count">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
-            </a>
-            <a href="{% url 'accounts:logout' %}" class="nav-icon-link">
-              <i class="fa fa-sign-out"></i>
-              <span class="icon-text">Logout</span>
-            </a>
-          </div>
-        </div>
-      </nav>
+    <!-- Center Section: Search Bar -->
+    <div class="d-flex flex-grow-1 justify-content-center">
+      <form class="d-flex search-form" action="{% url 'products:landing_page' %}" method="GET">
+        <input
+          class="form-control"
+          type="search"
+          name="q"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button
+          class="btn"
+          type="submit"
+        >
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Right Section: Icons -->
+    <div class="d-flex align-items-center">
+      <a href="{% url 'accounts:profile' %}" class="nav-icon-link me-3">
+        <i class="fa fa-user"></i>
+        <span class="icon-text">Profile</span>
+      </a>
+      <a href="{% if user.is_authenticated %}{% url 'wishlist:view_wishlist' %}{% else %}javascript:void(0);{% endif %}"
+         class="nav-icon-link me-3 {% if not user.is_authenticated %}requires-login{% endif %}"
+         id="wishlist-link">
+        <i class="fa fa-heart"></i>
+        <span class="icon-text">Wishlist</span>
+        <span class="wishlist-count-badge" id="wishlist-count">{{ wishlist_count|default:0 }}</span>
+      </a>
+      <a href="{% url 'cart:view_cart' %}" class="nav-icon-link me-3">
+        <i class="fa fa-shopping-cart"></i>
+        <span class="icon-text">Cart</span>
+        <span class="badge" id="cart-count">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
+      </a>
+      <a href="{% url 'accounts:logout' %}" class="nav-icon-link">
+        <i class="fa fa-sign-out"></i>
+        <span class="icon-text">Logout</span>
+      </a>
+    </div>
+  </div>
+</nav>
     </header>
     <main class="about-us-page">
       <div class="about-us-container">
