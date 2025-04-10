@@ -1,326 +1,328 @@
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - A&K Accessories And Closet</title>
-    <!-- Bootstrap and Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/dash-style.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <style>
-      /* Added styles for wishlist count */
-      .wishlist-count-badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background-color: #e91e63;
-        color: white;
-        border-radius: 50%;
-        padding: 2px 6px;
-        font-size: 12px;
-        font-weight: bold;
-      }
-      .nav-icon-link {
-        position: relative;
-      }
-      /* Existing styles remain unchanged */
-    </style>
-  </head>
-  <body>
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-          <!-- Left Section: Brand and Primary Links - Unchanged -->
-          <div class="d-flex align-items-center">
-            <a class="navbar-brand" href="{% url 'accounts:dashboard' %}"
-               style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #ff5252 !important; letter-spacing: 1px;">A&K</a>
-            <ul class="navbar-nav ms-3">
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco_friendly">ECO-Friendly</a>
-              </li>
-            </ul>
-          </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - A&K Accessories And Closet</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dash-style.css' %}">
+</head>
+<body>
+  <!-- Modern Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <!-- Brand and Category Links -->
+      <div class="d-flex align-items-center">
+        <a class="navbar-brand" href="{% url 'accounts:dashboard' %}">A&K</a>
+        <ul class="navbar-nav ms-4 d-none d-lg-flex">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco_friendly">ECO-Friendly</a>
+          </li>
+        </ul>
+      </div>
 
-          <!-- Center Section: Search Bar - Unchanged -->
-          <div class="d-flex flex-grow-1 justify-content-center">
-            <form class="d-flex" action="{% url 'products:landing_page' %}" method="GET" style="max-width: 400px; width: 100%;">
-              <input
-                class="form-control"
-                type="search"
-                name="q"
-                placeholder="Search"
-                aria-label="Search"
-                style="height: 40px; border-radius: 20px 0 0 20px;"
-              />
-              <button
-                class="btn"
-                type="submit"
-                style="height: 40px; width: 40px; background-color: #e91e63; color: white; border-radius: 0 20px 20px 0;"
-              >
-                <i class="fa fa-search"></i>
-              </button>
-            </form>
-          </div>
+      <!-- Search Bar -->
+      <div class="search-container">
+        <form class="search-form" action="{% url 'products:landing_page' %}" method="GET">
+          <input class="search-input" type="search" name="q" placeholder="Search products..." aria-label="Search">
+          <button class="search-btn" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </div>
 
-          <!-- Right Section: Icon Links - Updated wishlist link -->
-          <div class="d-flex align-items-center">
-            <a href="{% url 'accounts:profile' %}" class="nav-icon-link me-3">
-              <i class="fa fa-user"></i>
-              <span class="icon-text">Profile</span>
-            </a>
-            <a href="{% if user.is_authenticated %}{% url 'wishlist:view_wishlist' %}{% else %}javascript:void(0);{% endif %}"
-               class="nav-icon-link me-3 {% if not user.is_authenticated %}requires-login{% endif %}"
-               id="wishlist-link">
-              <i class="fa fa-heart"></i>
-              <span class="icon-text">Wishlist</span>
-              <span class="wishlist-count-badge" id="wishlist-count">{{ wishlist_count|default:0 }}</span>
-            </a>
-            <a href="{% url 'cart:view_cart' %}" class="nav-icon-link me-3">
-              <i class="fa fa-shopping-cart"></i>
-              <span class="icon-text">Cart</span>
-              <span class="badge" id="cart-count">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
-            </a>
-            <a href="{% url 'accounts:logout' %}" class="nav-icon-link">
-              <i class="fa fa-sign-out"></i>
-              <span class="icon-text">Logout</span>
-            </a>
+      <!-- User Icons -->
+      <div class="nav-icons">
+        <a href="{% url 'accounts:profile' %}" class="nav-icon-link" title="Profile">
+          <i class="fas fa-user nav-icon"></i>
+          <span class="icon-text">Profile</span>
+        </a>
+        <a href="{% if user.is_authenticated %}{% url 'wishlist:view_wishlist' %}{% else %}javascript:void(0);{% endif %}"
+           class="nav-icon-link {% if not user.is_authenticated %}requires-login{% endif %}"
+           id="wishlist-link" title="Wishlist">
+          <i class="fas fa-heart nav-icon"></i>
+          <span class="icon-text">Wishlist</span>
+          <span class="badge" id="wishlist-count">{{ wishlist_count|default:0 }}</span>
+        </a>
+        <a href="{% url 'cart:view_cart' %}" class="nav-icon-link" title="Cart">
+          <i class="fas fa-shopping-cart nav-icon"></i>
+          <span class="icon-text">Cart</span>
+          <span class="badge" id="cart-count">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
+        </a>
+        <a href="{% url 'accounts:logout' %}" class="nav-icon-link" title="Logout">
+          <i class="fas fa-sign-out-alt nav-icon"></i>
+          <span class="icon-text">Logout</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 hero-content">
+          <h1 class="hero-title">Discover Your Unique Style</h1>
+          <p class="hero-text">
+            Ethically crafted fashion that celebrates every body type. Embrace sustainability without compromising on style.
+          </p>
+          <div class="hero-buttons">
+            <a href="{% url 'products:clothing' %}" class="btn btn-primary">Shop Collection</a>
+            <a href="{% url 'products:about_us' %}" class="btn btn-outline">Our Story</a>
           </div>
         </div>
-      </nav>
-    </header>
-
-    <!-- Hero Section - Unchanged -->
-    <main>
-      <section class="hero-section">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-md-6 hero-text-section">
-              <h1 class="hero-title">Discover Your Style</h1>
-              <p class="hero-text">
-                Ethically made fashion for every body type. Shop now and embrace sustainability!
-              </p>
-              <div class="hero-buttons">
-                <a href="{% url 'products:clothing' %}" class="btn btn-custom-primary">Shop Now</a>
-                <a href="{% url 'products:about_us' %}" class="btn btn-custom-primary">Learn More</a>
-              </div>
-            </div>
-            <div class="col-md-6 hero-image-container">
-              <img src="{% static 'images/hero.jpg' %}" alt="Hero Image" class="hero-image" />
-              <div class="image-overlay"></div>
-            </div>
+        <div class="col-lg-6 mt-4 mt-lg-0">
+          <div class="hero-image-container">
+            <img src="{% static 'images/hero.png' %}" alt="Fashionable woman" class="hero-image">
           </div>
-        </div>
-      </section>
-
-      <!-- Shop by Category Section - Unchanged -->
-      <section class="container my-5">
-        <h2 class="section-title">Shop by Category</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
-            <div class="card h-100">
-              <img src="{% static 'images/cloth.jpg' %}" class="card-img-top" alt="Clothing" />
-              <div class="card-body">
-                <h5 class="card-title">Clothing</h5>
-                <a href="{% url 'products:clothing' %}" class="btn btn-primary btn-sm">Explore</a>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="{% static 'images/acc.jpg' %}" class="card-img-top" alt="Accessories" />
-              <div class="card-body">
-                <h5 class="card-title">Accessories</h5>
-                <a href="{% url 'products:accessories' %}?category=accessories" class="btn btn-primary btn-sm">Explore</a>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="{% static 'images/eco.jpg' %}" class="card-img-top" alt="Eco-Friendly" />
-              <div class="card-body">
-                <h5 class="card-title">Eco-Friendly</h5>
-                <a href="{% url 'products:eco_friendly' %}?category=eco-friendly" class="btn btn-primary btn-sm">Explore</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Trending Products Section - Unchanged -->
-      <section class="container trending-section my-5">
-        <h2 class="section-title">Trending Products</h2>
-        <div class="trending-products">
-          {% if trending_products %}
-            {% for product in trending_products %}
-              <div class="product">
-                {% if product.image %}
-                  <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                {% else %}
-                  <img src="{% static 'images/default.png' %}" alt="Default Image">
-                {% endif %}
-                <h2>{{ product.title }}</h2>
-                <p>Rs.{{ product.price }}</p>
-                {% if user.is_authenticated %}
-                  <a href="{% url 'cart:add_to_cart' product.id %}" class="btn" onclick="addToCart(event, '{% url 'cart:add_to_cart' product.id %}')">Add to Cart</a>
-                {% else %}
-                  <a href="{% url 'accounts:auth' %}?next={% url 'accounts:dashboard' %}" class="btn" onclick="return confirm('You are not logged in. Do you want to log in?');">
-                    Add to Cart
-                  </a>
-                {% endif %}
-              </div>
-            {% endfor %}
-          {% else %}
-            <p class="text-center">No trending products available.</p>
-          {% endif %}
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer Section - Unchanged -->
-    <footer class="footer-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3">
-            <h5>About Us</h5>
-            <p>Learn more about A&K Accessories and Closet.</p>
-          </div>
-          <div class="col-md-3">
-            <h5>Contact</h5>
-            <ul class="list-unstyled">
-              <li>Email: ak077@gmail.com</li>
-              <li>Phone: +977 9866413343</li>
-              <li>Address: Kathmandu Online, Style City</li>
-            </ul>
-          </div>
-          <div class="col-md-3">
-            <h5>Help</h5>
-            <ul class="list-unstyled">
-              <li><a href="#">FAQs</a></li>
-              <li><a href="#">Shipping</a></li>
-              <li><a href="#">Returns</a></li>
-            </ul>
-          </div>
-          <div class="col-md-3">
-            <h5>Info</h5>
-            <ul class="list-unstyled">
-              <li><a href="#">Privacy</a></li>
-              <li><a href="#">Terms</a></li>
-              <li><a href="#">Careers</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="text-center py-4">
-          <p>&copy; 2025 A&K Accessories And Closet</p>
         </div>
       </div>
-    </footer>
+    </div>
+  </section>
 
-    <!-- JavaScript for Wishlist and Cart Functionality -->
-    <script>
-      // Store wishlist count in session storage
-      function storeWishlistCount(count) {
-        sessionStorage.setItem('wishlistCount', count);
-      }
+  <!-- Shop by Category -->
+  <section class="category-section">
+    <div class="container">
+      <h2 class="section-title text-center">Shop by Category</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="category-card">
+            <img src="{% static 'images/cloth.jpg' %}" class="card-img-top" alt="Clothing">
+            <div class="card-body">
+              <h3 class="card-title">Clothing</h3>
+              <a href="{% url 'products:clothing' %}" class="btn btn-primary">Explore</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="category-card">
+            <img src="{% static 'images/acc.jpg' %}" class="card-img-top" alt="Accessories">
+            <div class="card-body">
+              <h3 class="card-title">Accessories</h3>
+              <a href="{% url 'products:accessories' %}" class="btn btn-primary">Explore</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="category-card">
+            <img src="{% static 'images/eco.jpg' %}" class="card-img-top" alt="Eco-Friendly">
+            <div class="card-body">
+              <h3 class="card-title">Eco-Friendly</h3>
+              <a href="{% url 'products:eco_friendly' %}" class="btn btn-primary">Explore</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      function getStoredWishlistCount() {
-        return sessionStorage.getItem('wishlistCount') || 0;
-      }
+  <!-- Trending Products -->
+  <section class="trending-section">
+    <div class="container">
+      <div class="trending-header">
+        <h2 class="section-title">Trending This Week</h2>
+      </div>
 
-      // Update Wishlist Count
-      function updateWishlistCount() {
-        fetch("{% url 'wishlist:get_wishlist_count' %}", {
-          method: 'GET',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}',
-          },
-        })
-        .then(response => response.json())
-        .then(data => {
-          const wishlistCountElement = document.getElementById("wishlist-count");
-          if (wishlistCountElement) {
-            wishlistCountElement.textContent = data.wishlist_count;
-            storeWishlistCount(data.wishlist_count);
-          }
-        })
-        .catch(error => {
-          console.error('Error updating wishlist count:', error);
-        });
-      }
+      <div class="trending-products">
+        {% if trending_products %}
+          {% for product in trending_products %}
+            <div class="product-card">
+              {% if product.is_new %}
+                <span class="product-badge">New</span>
+              {% endif %}
+              {% if product.image %}
+                <img src="{{ product.image.url }}" class="product-image" alt="{{ product.title }}">
+              {% else %}
+                <img src="{% static 'images/default.png' %}" class="product-image" alt="Default product image">
+              {% endif %}
+              <div class="product-info">
+                <h3 class="product-title">{{ product.title }}</h3>
+                <p class="product-price">Rs.{{ product.price }}</p>
+                {% if user.is_authenticated %}
+                  <button class="add-to-cart" onclick="addToCart(event, '{% url 'cart:add_to_cart' product.id %}')">Add to Cart</button>
+                {% else %}
+                  <button class="add-to-cart" onclick="window.location.href='{% url 'accounts:auth' %}?next={% url 'accounts:dashboard' %}'">Add to Cart</button>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-center w-100">No trending products available at the moment.</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
 
-      // Cart Functions
-      function addToCart(event, url) {
-        event.preventDefault();
-        fetch(url, {
-          method: 'GET',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}',
-          },
-        })
-        .then(response => {
-          if (response.ok) {
-            updateCartCount();
-          } else {
-            console.error("Failed to add product to cart.");
-          }
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
-      }
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <a href="{% url 'accounts:dashboard' %}" class="footer-logo">A&K</a>
+          <p>Ethically made fashion for every body type. Sustainable, stylish, and made with love.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+          <div class="footer-links">
+            <h5>Shop</h5>
+            <ul>
+              <li><a href="{% url 'products:clothing' %}">Clothing</a></li>
+              <li><a href="{% url 'products:accessories' %}">Accessories</a></li>
+              <li><a href="{% url 'products:eco_friendly' %}">ECO-Friendly</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <div class="footer-links">
+            <h5>Help</h5>
+            <ul>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Shipping & Returns</a></li>
+              <li><a href="#">Size Guide</a></li>
+              <li><a href="#">Track Order</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <div class="footer-links">
+            <h5>Contact</h5>
+            <ul>
+              <li><i class="fas fa-envelope me-2"></i> ak077@gmail.com</li>
+              <li><i class="fas fa-phone me-2"></i> +977 9866413343</li>
+              <li><i class="fas fa-map-marker-alt me-2"></i> Kathmandu, Style City</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 A&K Accessories And Closet. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-      function updateCartCount() {
-        fetch("{% url 'cart:get_cart_count' %}", {
-          method: 'GET',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}',
-          },
-        })
-        .then(response => response.json())
-        .then(data => {
-          const cartCountElement = document.getElementById("cart-count");
-          if (cartCountElement) {
-            cartCountElement.textContent = data.cart_count;
-          }
-        })
-        .catch(error => {
-          console.error("Error updating cart count:", error);
-        });
-      }
+  <!-- JavaScript -->
+  <script>
+    // Store wishlist count in session storage
+    function storeWishlistCount(count) {
+      sessionStorage.setItem('wishlistCount', count);
+    }
 
-      // Initialize on page load
-      document.addEventListener('DOMContentLoaded', function() {
-        // Load wishlist count from session storage
-        const storedCount = getStoredWishlistCount();
+    function getStoredWishlistCount() {
+      return sessionStorage.getItem('wishlistCount') || 0;
+    }
+
+    // Update Wishlist Count
+    function updateWishlistCount() {
+      fetch("{% url 'wishlist:get_wishlist_count' %}", {
+        method: 'GET',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
         const wishlistCountElement = document.getElementById("wishlist-count");
-        if (wishlistCountElement && storedCount) {
-          wishlistCountElement.textContent = storedCount;
+        if (wishlistCountElement) {
+          wishlistCountElement.textContent = data.wishlist_count;
+          storeWishlistCount(data.wishlist_count);
         }
+      })
+      .catch(error => {
+        console.error('Error updating wishlist count:', error);
+      });
+    }
 
-        // Update counts from server
-        updateWishlistCount();
-        updateCartCount();
+    // Cart Functions
+    function addToCart(event, url) {
+      event.preventDefault();
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          updateCartCount();
+          // Show success message
+          const btn = event.target;
+          btn.textContent = 'Added!';
+          btn.style.backgroundColor = '#4CAF50';
+          setTimeout(() => {
+            btn.textContent = 'Add to Cart';
+            btn.style.backgroundColor = '';
+          }, 2000);
+        } else {
+          console.error("Failed to add product to cart.");
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+    }
 
-        // Handle login requirement for wishlist
-        const wishlistLinks = document.querySelectorAll('.requires-login');
-        wishlistLinks.forEach(link => {
-          link.addEventListener('click', function(e) {
-            e.preventDefault();
-            if(confirm('You need to login to access your wishlist. Do you want to login now?')) {
-              window.location.href = "{% url 'accounts:auth' %}?next={{ request.path }}";
-            }
-          });
+    function updateCartCount() {
+      fetch("{% url 'cart:get_cart_count' %}", {
+        method: 'GET',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        const cartCountElement = document.getElementById("cart-count");
+        if (cartCountElement) {
+          cartCountElement.textContent = data.cart_count;
+        }
+      })
+      .catch(error => {
+        console.error("Error updating cart count:", error);
+      });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load wishlist count from session storage
+      const storedCount = getStoredWishlistCount();
+      const wishlistCountElement = document.getElementById("wishlist-count");
+      if (wishlistCountElement && storedCount) {
+        wishlistCountElement.textContent = storedCount;
+      }
+
+      // Update counts from server
+      updateWishlistCount();
+      updateCartCount();
+
+      // Handle login requirement for wishlist
+      const wishlistLinks = document.querySelectorAll('.requires-login');
+      wishlistLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          if(confirm('You need to login to access your wishlist. Do you want to login now?')) {
+            window.location.href = "{% url 'accounts:auth' %}?next={{ request.path }}";
+          }
         });
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>

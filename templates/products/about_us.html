@@ -1,607 +1,373 @@
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About Us - A&K Accessories And Closet</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-      :root {
-        --primary-color: #ff7e7e;
-        --primary-dark: #ff5252;
-        --secondary-color: #ffe4e6;
-        --light-bg: #fff8f6;
-        --card-bg: #ffffff;
-        --dark-text: #333333;
-        --medium-text: #5c5c5c;
-        --light-text: #777777;
-        --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        --transition: all 0.3s ease;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - A&K Accessories And Closet</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dash-style.css' %}">
+  <style>
+    /* About Us Specific Styles */
+    .about-hero {
+      background: linear-gradient(135deg, #ffd7dc 0%, #ffecf0 100%);
+      padding: 6rem 0;
+      position: relative;
+      overflow: hidden;
+    }
 
-      body {
-        font-family: 'Poppins', sans-serif;
-        color: var(--medium-text);
-        line-height: 1.7;
-        background-color: var(--light-bg);
-        overflow-x: hidden;
-      }
+    .about-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('{% static "images/hero-pattern.png" %}') repeat;
+      opacity: 0.05;
+      z-index: 1;
+    }
 
-      h1, h2, h3, h4 {
-        font-family: 'Playfair Display', serif;
-        color: var(--dark-text);
-      }
+    .about-hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
-            .navbar {
-        background-color: #ffe4e6;
-        box-shadow: var(--shadow);
-        padding: 15px 0;
-      }
+    .about-title {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      color: #333;
+      animation: fadeInUp 1s ease-out;
+    }
 
+    .about-subtitle {
+      font-size: 1.25rem;
+      color: #666;
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 1.2s ease-out;
+    }
 
-      .navbar-brand {
-        font-family: 'Playfair Display', serif;
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-dark) !important;
-        letter-spacing: 1px;
-      }
+    .about-section {
+      padding: 5rem 0;
+    }
 
-      .nav-link {
-        font-weight: 500;
-        color: var(--dark-text) !important;
-        margin: 0 10px;
-        position: relative;
-      }
+    .about-card {
+      background: white;
+      border-radius: 15px;
+      padding: 3rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 3rem;
+    }
 
-      .nav-link:after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 2px;
-        background: var(--primary-color);
-        bottom: 0;
-        left: 0;
-        transition: var(--transition);
-      }
+    .about-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
 
-      .nav-link:hover:after {
-        width: 100%;
-      }
+    .about-feature {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
 
-      /* Navigation Icons */
-      .nav-icon-link {
-        position: relative;
-        color: var(--dark-text);
-        text-decoration: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-size: 1.5rem;
-        margin: 5px;
-        transition: var(--transition);
-      }
+    .about-feature:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      background: linear-gradient(135deg, #ff7e7e 0%, #ffb6c1 100%);
+      color: white;
+    }
 
-      .nav-icon-link:hover {
-        color: var(--primary-color);
-        transform: translateY(-2px);
-      }
+    .about-feature:hover .feature-icon,
+    .about-feature:hover h3,
+    .about-feature:hover p {
+      color: white;
+    }
 
-      .nav-icon-link i {
-        font-size: 1.2rem;
-        margin-bottom: 5px;
-      }
-
-      .icon-text {
-        font-size: 0.8rem;
-      }
-
-      .wishlist-count-badge, .badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background-color: var(--primary-dark);
-        color: white;
-        border-radius: 50%;
-        padding: 2px 6px;
-        font-size: 12px;
-        font-weight: bold;
-      }
-
-      /* ABOUT US PAGE */
-      .about-us-page {
-        background-color: var(--secondary-color);
-        padding: 80px 0 100px;
-      }
-
-      .about-us-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      /* Section Title */
-      .section-title {
-        text-align: center;
-        margin-bottom: 60px;
-        position: relative;
-      }
-
-      .section-title h2 {
-        font-size: 2.8rem;
-        font-weight: 700;
-        margin-bottom: 20px;
-        position: relative;
-        display: inline-block;
-      }
-
-      .section-title h2:after {
-        content: '';
-        position: absolute;
-        width: 60px;
-        height: 3px;
-        background: var(--primary-color);
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .section-title p {
-        max-width: 700px;
-        margin: 0 auto;
-        color: var(--light-text);
-      }
-
-      /* About Us Content */
-      .about-us-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 50px;
-        margin-bottom: 80px;
-        flex-wrap: wrap;
-      }
-
-      .about-us-text {
-        flex: 1;
-        min-width: 300px;
-      }
-
-      .about-us-text h3 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-        color: var(--primary-dark);
-      }
-
-      .about-us-text p {
-        margin-bottom: 20px;
-        font-size: 1.1rem;
-        color: var(--medium-text);
-      }
-
-      .about-us-image {
-        flex: 1;
-        min-width: 300px;
-        position: relative;
-      }
-
-      .about-us-image img {
-        width: 100%;
-        border-radius: 10px;
-        box-shadow: var(--shadow);
-        transition: var(--transition);
-      }
-
-      .about-us-image:hover img {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-      }
-
-      /* Feature Boxes */
-      .features {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 30px;
-        margin: 60px 0;
-      }
-
-      .feature-box {
-        flex: 1;
-        min-width: 250px;
-        background: var(--card-bg);
-        padding: 40px 30px;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: var(--shadow);
-        transition: var(--transition);
-      }
-
-      .feature-box:hover {
-        transform: translateY(-10px);
-        background: var(--primary-color);
-        color: white;
-      }
-
-      .feature-box:hover h3,
-      .feature-box:hover p,
-      .feature-box:hover .feature-icon {
-        color: white;
-      }
-
-      .feature-icon {
-        font-size: 2.5rem;
-        color: var(--primary-color);
-        margin-bottom: 20px;
-        transition: var(--transition);
-      }
-
-      .feature-box h3 {
-        font-size: 1.5rem;
-        margin-bottom: 15px;
-        transition: var(--transition);
-      }
-
-      /* Our Story Section */
-      .our-story {
-        background: linear-gradient(135deg, var(--card-bg) 0%, #fff9fa 100%);
-        padding: 60px;
+          .about-image-wrapper {
         border-radius: 15px;
-        box-shadow: var(--shadow);
-        margin: 80px 0;
-        position: relative;
         overflow: hidden;
-      }
-
-      .our-story:before {
-        content: '';
-        position: absolute;
-        width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         height: 100%;
-        top: 0;
-        left: 0;
-        background: url("{% static 'images/pattern.png' %}") repeat;
-        opacity: 0.05;
-        z-index: 0;
-      }
-
-      .our-story-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      .our-story h2 {
-        text-align: center;
-        margin-bottom: 40px;
-        color: var(--primary-dark);
-      }
-
-      .our-story p {
-        font-size: 1.1rem;
-        margin-bottom: 30px;
-        text-align: center;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      /* Team Section */
-      .team {
-        margin: 80px 0;
-      }
-
-      .team-members {
         display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 30px;
       }
 
-      .team-member {
-        width: 250px;
-        text-align: center;
-      }
-
-      .member-image {
-        width: 180px;
-        height: 180px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin: 0 auto 20px;
-        border: 5px solid var(--card-bg);
-        box-shadow: var(--shadow);
-      }
-
-      .member-image img {
+      .about-image {
         width: 100%;
-        height: 100%;
         object-fit: cover;
-        transition: var(--transition);
-      }
-
-      .team-member:hover .member-image img {
-        transform: scale(1.1);
-      }
-
-      .member-info h3 {
-        margin: 15px 0 5px;
-      }
-
-      .member-info p {
-        color: var(--primary-color);
-        font-weight: 600;
-      }
-
-      /* Contact Info Section */
-      .contact-info {
-        background: var(--card-bg);
-        padding: 60px;
+        height: 100%;
+        transition: transform 0.4s ease;
         border-radius: 15px;
-        box-shadow: var(--shadow);
-        margin-top: 60px;
       }
 
-      .contact-methods {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 30px;
-        margin-top: 40px;
+      .about-image-wrapper:hover .about-image {
+        transform: scale(1.03);
       }
 
-      .contact-method {
-        flex: 1;
-        min-width: 250px;
-        text-align: center;
-        padding: 30px;
-        border-radius: 10px;
-        background: var(--secondary-color);
-        transition: var(--transition);
+      .about-card {
+        height: 100%;
       }
+    .image-left-text-right, .image-right-text-left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2rem;
+    }
+    .image-left-text-right .image-col,
+    .image-right-text-left .image-col {
+      flex: 1 1 40%;
+    }
+    .image-left-text-right .text-col,
+    .image-right-text-left .text-col {
+      flex: 1 1 55%;
+    }
+    .image-col img {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transition: transform 0.4s ease;
+    }
+    .image-col img:hover {
+      transform: scale(1.03);
+    }
 
-      .contact-method:hover {
-        background: var(--primary-color);
-        color: white;
-      }
+    .feature-icon {
+      font-size: 2.5rem;
+      color: #ff7e7e;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
 
-      .contact-method:hover i,
-      .contact-method:hover h3,
-      .contact-method:hover a {
-        color: white;
-      }
+    .team-section {
+      background: #fff9fa;
+      padding: 5rem 0;
+    }
 
-      .contact-method i {
-        font-size: 2.5rem;
-        color: var(--primary-color);
-        margin-bottom: 20px;
-        transition: var(--transition);
-      }
+    .team-members {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
 
-      .contact-method h3 {
-        margin-bottom: 15px;
-        transition: var(--transition);
-      }
+    .team-member {
+      text-align: center;
+    }
 
-      .contact-method a {
-        color: var(--medium-text);
-        text-decoration: none;
-        transition: var(--transition);
-      }
+    .member-image {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 1.5rem;
+      border: 5px solid white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
-      /* Search Bar */
-      .search-form {
-        max-width: 400px;
-        width: 100%;
-      }
+    .member-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
 
-      .search-form .form-control {
-        height: 40px;
-        border-radius: 20px 0 0 20px;
-        border: 1px solid #ddd;
-      }
+    .team-member:hover .member-image img {
+      transform: scale(1.1);
+    }
 
-      .search-form .btn {
-        height: 40px;
-        width: 40px;
-        background-color: var(--primary-dark);
-        color: white;
-        border-radius: 0 20px 20px 0;
-        border: none;
-        transition: var(--transition);
-      }
+    .contact-methods {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
 
-      .search-form .btn:hover {
-        background-color: var(--primary-color);
-      }
+    .contact-method {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
 
-      /* Animations */
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+    .contact-method:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
 
-      .fade-in {
-        animation: fadeInUp 1s ease-out forwards;
-      }
+    .contact-method i {
+      font-size: 2rem;
+      color: #ff7e7e;
+      margin-bottom: 1rem;
+    }
 
-      .delay-1 {
-        animation-delay: 0.2s;
-      }
+    /* Story Section */
+    .story-section {
+      background: linear-gradient(135deg, #ffffff 0%, #fff9fa 100%);
+      padding: 5rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
 
-      .delay-2 {
-        animation-delay: 0.4s;
-      }
+    .story-section::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: url("{% static 'images/pattern.png' %}") repeat;
+      opacity: 0.05;
+      z-index: 0;
+    }
 
-      .delay-3 {
-        animation-delay: 0.6s;
-      }
+    .story-content {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Modern Navbar (matches dashboard exactly) -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <!-- Brand and Category Links -->
+      <div class="d-flex align-items-center">
+        <a class="navbar-brand" href="{% url 'accounts:dashboard' %}">A&K</a>
+        <ul class="navbar-nav ms-4 d-none d-lg-flex">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco_friendly">ECO-Friendly</a>
+          </li>
+        </ul>
+      </div>
 
-      /* Responsive adjustments */
-      @media (max-width: 992px) {
-        .navbar .container {
-          flex-direction: column;
-        }
+      <!-- Search Bar -->
+      <div class="search-container">
+        <form class="search-form" action="{% url 'products:landing_page' %}" method="GET">
+          <input class="search-input" type="search" name="q" placeholder="Search products..." aria-label="Search">
+          <button class="search-btn" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </div>
 
-        .d-flex.flex-grow-1.justify-content-center {
-          margin: 15px 0;
-        }
-      }
+      <!-- User Icons -->
+      <div class="nav-icons">
+        <a href="{% url 'accounts:profile' %}" class="nav-icon-link" title="Profile">
+          <i class="fas fa-user nav-icon"></i>
+          <span class="icon-text">Profile</span>
+        </a>
+        <a href="{% if user.is_authenticated %}{% url 'wishlist:view_wishlist' %}{% else %}javascript:void(0);{% endif %}"
+           class="nav-icon-link {% if not user.is_authenticated %}requires-login{% endif %}"
+           id="wishlist-link" title="Wishlist">
+          <i class="fas fa-heart nav-icon"></i>
+          <span class="icon-text">Wishlist</span>
+          <span class="badge" id="wishlist-count">{{ wishlist_count|default:0 }}</span>
+        </a>
+        <a href="{% url 'cart:view_cart' %}" class="nav-icon-link" title="Cart">
+          <i class="fas fa-shopping-cart nav-icon"></i>
+          <span class="icon-text">Cart</span>
+          <span class="badge" id="cart-count">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
+        </a>
+        <a href="{% url 'accounts:logout' %}" class="nav-icon-link" title="Logout">
+          <i class="fas fa-sign-out-alt nav-icon"></i>
+          <span class="icon-text">Logout</span>
+        </a>
+      </div>
+    </div>
+  </nav>
 
-      @media (max-width: 768px) {
-        .section-title h2 {
-          font-size: 2.2rem;
-        }
+  <!-- Hero Section -->
+  <section class="about-hero">
+    <div class="container">
+      <div class="about-hero-content">
+        <h1 class="about-title">Our Ethical Fashion Journey</h1>
+        <p class="about-subtitle">Discover the story behind A&K Accessories and Closet - where style meets sustainability</p>
+      </div>
+    </div>
+  </section>
 
-        .about-us-content, .our-story {
-          flex-direction: column;
-          padding: 30px;
-        }
-
-        .our-story {
-          margin: 40px 0;
-        }
-
-        .contact-method {
-          min-width: 100%;
-        }
-
-        .features {
-          flex-direction: column;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-light">
+  <section class="about-section">
   <div class="container">
-    <!-- Left Section: Brand and Primary Links -->
-    <div class="d-flex align-items-center">
-      <a class="navbar-brand" href="{% url 'accounts:dashboard' %}">A&K</a>
-      <ul class="navbar-nav ms-3">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco_friendly">ECO-Friendly</a>
-        </li>
-      </ul>
-    </div>
+    <div class="row gx-5">
+      <!-- Text Column -->
+      <div class="col-lg-6 d-flex">
+        <div class="about-card w-100 d-flex flex-column justify-content-center">
+          <h2 class="section-title">Who We Are</h2>
+          <p>
+            A&K Accessories and Closet is your premier destination for ethical and stylish fashion. We curate a thoughtful collection of clothing, accessories, and eco-friendly products designed to celebrate every body type while honoring our planet.
+          </p>
+          <p>
+            At the heart of our brand is a commitment to quality craftsmanship and sustainable practices. We carefully select materials and partners who share our vision for a fashion industry that values both people and the environment.
+          </p>
+        </div>
+      </div>
 
-    <!-- Center Section: Search Bar -->
-    <div class="d-flex flex-grow-1 justify-content-center">
-      <form class="d-flex search-form" action="{% url 'products:landing_page' %}" method="GET">
-        <input
-          class="form-control"
-          type="search"
-          name="q"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <button
-          class="btn"
-          type="submit"
-        >
-          <i class="fa fa-search"></i>
-        </button>
-      </form>
-    </div>
-
-    <!-- Right Section: Icons -->
-    <div class="d-flex align-items-center">
-      <a href="{% url 'accounts:profile' %}" class="nav-icon-link me-3">
-        <i class="fa fa-user"></i>
-        <span class="icon-text">Profile</span>
-      </a>
-      <a href="{% if user.is_authenticated %}{% url 'wishlist:view_wishlist' %}{% else %}javascript:void(0);{% endif %}"
-         class="nav-icon-link me-3 {% if not user.is_authenticated %}requires-login{% endif %}"
-         id="wishlist-link">
-        <i class="fa fa-heart"></i>
-        <span class="icon-text">Wishlist</span>
-        <span class="wishlist-count-badge" id="wishlist-count">{{ wishlist_count|default:0 }}</span>
-      </a>
-      <a href="{% url 'cart:view_cart' %}" class="nav-icon-link me-3">
-        <i class="fa fa-shopping-cart"></i>
-        <span class="icon-text">Cart</span>
-        <span class="badge" id="cart-count">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
-      </a>
-      <a href="{% url 'accounts:logout' %}" class="nav-icon-link">
-        <i class="fa fa-sign-out"></i>
-        <span class="icon-text">Logout</span>
-      </a>
+      <!-- Image Column -->
+      <div class="col-lg-6 d-flex">
+        <div class="about-image-wrapper w-100">
+          <img src="{% static 'images/about-hero.jpg' %}" alt="Our Story" class="about-image" />
+        </div>
+      </div>
     </div>
   </div>
-</nav>
-    </header>
-    <main class="about-us-page">
-      <div class="about-us-container">
-        <!-- Hero Section -->
-        <section class="section-title fade-in">
-          <h2>Our Ethical Fashion Journey</h2>
-          <p>Discover the story behind A&K Accessories and Closet - where style meets sustainability</p>
-        </section>
+</section>
 
-        <!-- About Us Section -->
-        <section class="about-us-content fade-in delay-1">
-          <div class="about-us-text">
-            <h3>Who We Are</h3>
-            <p>
-              A&K Accessories and Closet is your premier destination for ethical and stylish fashion. We curate a thoughtful collection of clothing, accessories, and eco-friendly products designed to celebrate every body type while honoring our planet.
-            </p>
-            <p>
-              At the heart of our brand is a commitment to quality craftsmanship and sustainable practices. We carefully select materials and partners who share our vision for a fashion industry that values both people and the environment.
-            </p>
-            <p>
-              Our collections blend contemporary design with timeless elegance, creating pieces that you'll love wearing season after season.
-            </p>
+      <!-- Features -->
+      <div class="about-features">
+        <div class="about-feature fade-in delay-1">
+          <div class="feature-icon">
+            <i class="fas fa-leaf"></i>
           </div>
-          <div class="about-us-image">
-            <img src="{% static 'images/hero.jpg' %}" alt="Sustainable Fashion" class="img-fluid" />
-          </div>
-        </section>
-
-        <!-- Features Section -->
-        <div class="features">
-          <div class="feature-box fade-in delay-1">
-            <div class="feature-icon">
-              <i class="fas fa-leaf"></i>
-            </div>
-            <h3>Sustainable</h3>
-            <p>Eco-friendly materials and production methods that reduce environmental impact</p>
-          </div>
-
-          <div class="feature-box fade-in delay-2">
-            <div class="feature-icon">
-              <i class="fas fa-heart"></i>
-            </div>
-            <h3>Ethical</h3>
-            <p>Fair wages and safe working conditions for all our partners and suppliers</p>
-          </div>
-
-          <div class="feature-box fade-in delay-3">
-            <div class="feature-icon">
-              <i class="fas fa-tshirt"></i>
-            </div>
-            <h3>Inclusive</h3>
-            <p>Styles designed to flatter and celebrate all body types and personal expressions</p>
-          </div>
+          <h3>Sustainable Fashion</h3>
+          <p>Eco-friendly materials and production methods that reduce environmental impact</p>
         </div>
 
-        <!-- Our Story Section -->
-        <section class="our-story fade-in delay-2">
-          <div class="our-story-content">
-            <h2>Our Story</h2>
+        <div class="about-feature fade-in delay-2">
+          <div class="feature-icon">
+            <i class="fas fa-heart"></i>
+          </div>
+          <h3>Ethical Practices</h3>
+          <p>Fair wages and safe working conditions for all our partners and suppliers</p>
+        </div>
+
+        <div class="about-feature fade-in delay-3">
+          <div class="feature-icon">
+            <i class="fas fa-tshirt"></i>
+          </div>
+          <h3>Inclusive Design</h3>
+          <p>Styles designed to flatter and celebrate all body types and personal expressions</p>
+        </div>
+      </div>
+ <section class="about-section">
+    <div class="container">
+      <div class="image-left-text-right">
+        <div class="image-col">
+          <img src="{% static 'images/hero.png' %}" alt="Our Story Image">
+        </div>
+        <div class="text-col">
+          <div class="story-card fade-in">
+            <h2 class="section-title">Our Story</h2>
             <p>
               A&K was born from a shared passion for fashion that doesn't compromise on ethics or the environment. Frustrated by the fast fashion industry's impact, we set out to create an alternative that celebrates both style and sustainability.
             </p>
@@ -609,97 +375,101 @@
               What began as a small boutique with a handful of carefully selected pieces has grown into a beloved destination for conscious consumers. Every item in our collection tells a story - of artisans paid fairly, of materials sourced responsibly, and of designs made to last.
             </p>
           </div>
-        </section>
-
-        <!-- Team Section -->
-        <section class="team fade-in delay-3">
-          <div class="section-title">
-            <h2>Meet The Founders</h2>
-            <p>The passionate minds behind A&K's vision</p>
-          </div>
-
-          <div class="team-members">
-            <div class="team-member">
-              <div class="member-image">
-                <img src="{% static 'images/founder1.jpg' %}" alt="Founder A" />
-              </div>
-              <div class="member-info">
-                <h3>Kabita Thapa</h3>
-                <p>Creative Director</p>
-              </div>
-            </div>
-
-            <div class="team-member">
-              <div class="member-image">
-                <img src="{% static 'images/founder2.jpg' %}" alt="Founder K" />
-              </div>
-              <div class="member-info">
-                <h3>Ashmita Karki</h3>
-                <p>Sustainability Lead</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Contact Info Section -->
-        <section class="contact-info fade-in">
-          <div class="section-title">
-            <h2>Get In Touch</h2>
-            <p>We'd love to hear from you</p>
-          </div>
-
-          <div class="contact-methods">
-            <div class="contact-method">
-              <i class="fas fa-envelope"></i>
-              <h3>Email Us</h3>
-              <a href="mailto:ak077@gmail.com">ak077@gmail.com</a>
-            </div>
-
-            <div class="contact-method">
-              <i class="fas fa-phone"></i>
-              <h3>Call Us</h3>
-              <a href="tel:+9779866413343">+977 9866413343</a>
-            </div>
-
-            <div class="contact-method">
-              <i class="fas fa-map-marker-alt"></i>
-              <h3>Visit Us</h3>
-              <p>Kathmandu Online, Style City</p>
-            </div>
-          </div>
-        </section>
+        </div>
       </div>
-    </main>
+    </div>
+  </section>
 
-    <script>
-      // Simple animation trigger
-      document.addEventListener('DOMContentLoaded', function() {
-        const animatedElements = document.querySelectorAll('.fade-in');
+  <!-- Team Section -->
+  <section class="team-section">
+    <div class="container">
+      <h2 class="section-title text-center fade-in">Meet The Founders</h2>
+      <p class="text-center mb-5 fade-in">The passionate minds behind A&K's vision</p>
 
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.style.opacity = 1;
-            }
-          });
-        }, { threshold: 0.1 });
+      <div class="team-members">
+        <div class="team-member fade-in delay-1">
+          <div class="member-image">
+            <img src="{% static 'images/founder1.jpg' %}" alt="Kabita Thapa">
+          </div>
+          <h3>Kabita Thapa</h3>
+          <p class="text-primary">Creative Director</p>
+          <p>With an eye for design and a heart for sustainability, Kabita leads our creative vision.</p>
+        </div>
 
-        animatedElements.forEach(element => {
-          element.style.opacity = 0;
-          observer.observe(element);
-        });
+        <div class="team-member fade-in delay-2">
+          <div class="member-image">
+            <img src="{% static 'images/founder2.jpg' %}" alt="Ashmita Karki">
+          </div>
+          <h3>Ashmita Karki</h3>
+          <p class="text-primary">Sustainability Lead</p>
+          <p>Ashmita ensures every product meets our high ethical and environmental standards.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        // Handle login requirement for wishlist
-        const wishlistLinks = document.querySelectorAll('.requires-login');
-        wishlistLinks.forEach(link => {
-          link.addEventListener('click', function(e) {
-            e.preventDefault();
-            if(confirm('You need to login to access your wishlist. Do you want to login now?')) {
-              window.location.href = "{% url 'accounts:auth' %}?next={{ request.path }}";
-            }
-          });
+  <!-- Contact Section -->
+  <section class="about-section">
+    <div class="container">
+      <div class="about-card fade-in">
+        <h2 class="section-title text-center">Get In Touch</h2>
+        <p class="text-center mb-5">We'd love to hear from you</p>
+
+        <div class="contact-methods">
+          <div class="contact-method fade-in delay-1">
+            <i class="fas fa-envelope"></i>
+            <h3>Email Us</h3>
+            <a href="mailto:ak077@gmail.com">ak077@gmail.com</a>
+          </div>
+
+          <div class="contact-method fade-in delay-2">
+            <i class="fas fa-phone"></i>
+            <h3>Call Us</h3>
+            <a href="tel:+9779866413343">+977 9866413343</a>
+          </div>
+
+          <div class="contact-method fade-in delay-3">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Visit Us</h3>
+            <p>Kathmandu Online, Style City</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JavaScript -->
+  <script>
+    // Handle login requirement for wishlist
+    document.addEventListener('DOMContentLoaded', function() {
+      const wishlistLinks = document.querySelectorAll('.requires-login');
+      wishlistLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          if(confirm('You need to login to access your wishlist. Do you want to login now?')) {
+            window.location.href = "{% url 'accounts:auth' %}?next={{ request.path }}";
+          }
         });
       });
-    </script>
-  </body>
+
+      // Simple animation trigger
+      const animatedElements = document.querySelectorAll('.fade-in');
+      animatedElements.forEach(element => {
+        element.style.opacity = 0;
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+          }
+        });
+      }, { threshold: 0.1 });
+
+      animatedElements.forEach(element => {
+        observer.observe(element);
+      });
+    });
+  </script>
+</body>
 </html>

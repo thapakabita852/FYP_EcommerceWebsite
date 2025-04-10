@@ -1,464 +1,478 @@
 {% load static %}
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Cart - A&K Accessories And Closet</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/dash-style.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-    body {
-      background-color: #ffe4e6;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - A&K Accessories And Closet</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dash-style.css' %}">
+    <style>
+        .cart-section {
+            padding: 5rem 0;
+            background-color: var(--light-bg);
+        }
 
-    .cart-header {
-      background-color: #ffd7dc;
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    }
+        .cart-header {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary-dark);
+        }
 
-    .cart-header h1 {
-      color: #333;
-      font-weight: 600;
-    }
+        .cart-header h1 {
+            color: var(--dark-text);
+            font-weight: 600;
+            margin-bottom: 0;
+            font-size: 1.8rem;
+        }
 
-    .cart-item {
-      padding: 25px;
-      margin-bottom: 20px;
-      border-radius: 15px;
-      background-color: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      transition: all 0.3s ease;
-      border-left: 4px solid #ff7e7e;
-    }
+        .cart-header i {
+            color: var(--primary-dark);
+        }
 
-    .cart-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(255, 126, 126, 0.15);
-    }
+        .cart-item {
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 15px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-light);
+        }
 
-    .cart-img img {
-      width: 100%;
-      max-width: 120px;
-      height: auto;
-      border-radius: 10px;
-      object-fit: cover;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        .cart-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
 
-    .item-details h5 {
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 5px;
-    }
+        .cart-img img {
+            width: 100%;
+            max-width: 120px;
+            height: auto;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: var(--shadow-sm);
+        }
 
-    .item-details .text-muted {
-      font-size: 0.85rem;
-    }
+        .item-details h5 {
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
 
-    .item-details .text-primary {
-      color: #ff7e7e !important;
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
+        .item-details .text-muted {
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
 
-    .quantity-input {
-      width: 70px;
-      text-align: center;
-      border-radius: 25px;
-      border: 1px solid #ddd;
-      padding: 8px;
-      font-weight: 500;
-    }
+        .item-details .text-primary {
+            color: var(--primary-dark) !important;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
 
-    .update-btn {
-      background: linear-gradient(to right, #ff7e7e, #ffb6c1);
-      color: white;
-      border: none;
-      border-radius: 25px;
-      padding: 8px 15px;
-      transition: all 0.3s ease;
-      font-weight: 500;
-    }
+        .quantity-input {
+            width: 70px;
+            text-align: center;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            font-weight: 500;
+        }
 
-    .update-btn:hover {
-      background: linear-gradient(to right, #ff5252, #ff94a9);
-      transform: scale(1.05);
-    }
+        .update-btn {
+            background: linear-gradient(to right, var(--primary-light), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
 
-    .remove-btn {
-      background-color: white;
-      border: 1px solid #ff7e7e;
-      color: #ff7e7e;
-      border-radius: 25px;
-      padding: 8px 15px;
-      transition: all 0.3s ease;
-      font-weight: 500;
-    }
+        .update-btn:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-dark));
+            transform: scale(1.05);
+        }
 
-    .remove-btn:hover {
-      background-color: #ff7e7e;
-      color: white;
-      transform: scale(1.05);
-    }
+        .remove-btn {
+            background-color: var(--white);
+            border: 1px solid var(--primary-dark);
+            color: var(--primary-dark);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
 
-    .cart-summary {
-      background-color: white;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      border-top: 4px solid #ff7e7e;
-    }
+        .remove-btn:hover {
+            background-color: var(--primary-dark);
+            color: white;
+            transform: scale(1.05);
+        }
 
-    .cart-summary h4 {
-      color: #333;
-      font-weight: 600;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
-    }
+        .cart-summary {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-sm);
+            border-top: 4px solid var(--primary-dark);
+        }
 
-    .cart-summary .d-flex {
-      margin-bottom: 12px;
-    }
+        .cart-summary h4 {
+            color: var(--dark-text);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
 
-    .cart-summary hr {
-      margin: 20px 0;
-      border-color: #eee;
-    }
+        .cart-summary .d-flex {
+            margin-bottom: 0.8rem;
+        }
 
-    .place-order-btn {
-      background: linear-gradient(to right, #ff7e7e, #ffb6c1);
-      color: white;
-      border: none;
-      border-radius: 25px;
-      padding: 12px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      width: 100%;
-      box-shadow: 0 4px 8px rgba(255, 126, 126, 0.2);
-    }
+        .cart-summary hr {
+            margin: 1.5rem 0;
+            border-color: #eee;
+        }
 
-    .place-order-btn:hover {
-      background: linear-gradient(to right, #ff5252, #ff94a9);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 12px rgba(255, 82, 82, 0.3);
-    }
+        .place-order-btn {
+            background: linear-gradient(to right, var(--primary-light), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(255, 126, 126, 0.2);
+        }
 
-    .continue-shopping-btn {
-      background-color: white;
-      color: #333;
-      border: 1px solid #ddd;
-      border-radius: 25px;
-      padding: 12px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      width: 100%;
-      margin-top: 15px;
-    }
+        .place-order-btn:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-dark));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 82, 82, 0.3);
+        }
 
-    .continue-shopping-btn:hover {
-      background-color: #f8f9fa;
-      border-color: #ff7e7e;
-      color: #ff7e7e;
-      transform: translateY(-3px);
-    }
+        .continue-shopping-btn {
+            background-color: var(--white);
+            color: var(--dark-text);
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 1rem;
+        }
 
-    .empty-cart {
-      text-align: center;
-      padding: 80px 0;
-      color: #6c757d;
-      background-color: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
+        .continue-shopping-btn:hover {
+            background-color: #f8f9fa;
+            border-color: var(--primary-dark);
+            color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
 
-    .empty-cart i {
-      font-size: 80px;
-      margin-bottom: 20px;
-      color: #ffb6c1;
-      opacity: 0.8;
-    }
+        .empty-cart {
+            text-align: center;
+            padding: 5rem 2rem;
+            color: var(--light-text);
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--shadow-sm);
+        }
 
-    .empty-cart h3 {
-      color: #333;
-      font-weight: 600;
-      margin-bottom: 15px;
-    }
+        .empty-cart i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-light);
+            opacity: 0.8;
+        }
 
-    .empty-cart p {
-      font-size: 1.1rem;
-      margin-bottom: 25px;
-    }
+        .empty-cart h3 {
+            color: var(--dark-text);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
 
-    @media (max-width: 768px) {
-      .cart-item {
-        text-align: center;
-      }
+        .empty-cart p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
 
-      .cart-img img {
-        margin: 0 auto 15px;
-      }
+        @media (max-width: 768px) {
+            .cart-item {
+                text-align: center;
+            }
 
-      .item-details {
-        margin-bottom: 15px;
-      }
+            .cart-img img {
+                margin: 0 auto 1rem;
+            }
 
-      .quantity-controls {
-        justify-content: center;
-        margin-bottom: 15px;
-      }
+            .item-details {
+                margin-bottom: 1rem;
+            }
 
-      .item-actions {
-        justify-content: center;
-      }
-    }
-  </style>
+            .quantity-controls {
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+
+            .item-actions {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <div class="container">
-        <!-- Left Section: Brand and Primary Links -->
-        <div class="d-flex align-items-center">
-          <a class="navbar-brand" href="{% url 'accounts:dashboard' %}"
-             style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #ff5252 !important; letter-spacing: 1px;">A&K</a>
-          <ul class="navbar-nav ms-3">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco-friendly">ECO-Friendly</a>
-            </li>
-          </ul>
-        </div>
+    <!-- Modern Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Brand and Category Links -->
+            <div class="d-flex align-items-center">
+                <a class="navbar-brand" href="{% url 'accounts:dashboard' %}">A&K</a>
+                <ul class="navbar-nav ms-4 d-none d-lg-flex">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco_friendly">ECO-Friendly</a>
+                    </li>
+                </ul>
+            </div>
 
-        <!-- Center Section: Search Bar -->
-        <div class="d-flex flex-grow-1 justify-content-center">
-          <form class="d-flex" action="{% url 'products:landing_page' %}" method="GET" style="max-width: 400px; width: 100%;">
-            <input
-              class="form-control"
-              type="search"
-              name="q"
-              placeholder="Search"
-              aria-label="Search"
-              style="height: 40px; border-radius: 20px 0 0 20px;"
-            />
-            <button
-              class="btn"
-              type="submit"
-              style="height: 40px; width: 40px; background-color: #ff7e7e; color: white; border-radius: 0 20px 20px 0;"
-            >
-              <i class="fa fa-search"></i>
-            </button>
-          </form>
-        </div>
-
-        <!-- Right Section: Icon Links -->
-        <div class="d-flex align-items-center">
-          <a href="{% url 'accounts:profile' %}" class="nav-icon-link me-3">
-            <i class="fa fa-user"></i>
-            <span class="icon-text">Profile</span>
-          </a>
-          <a href="#" class="nav-icon-link me-3">
-            <i class="fa fa-heart"></i>
-            <span class="icon-text">Wishlist</span>
-            <span class="badge">0</span>
-          </a>
-          <a href="{% url 'cart:view_cart' %}" class="nav-icon-link me-3">
-            <i class="fa fa-shopping-cart"></i>
-            <span class="icon-text">Cart</span>
-            <span class="badge">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
-          </a>
-          <a href="{% url 'accounts:logout' %}" class="nav-icon-link">
-            <i class="fa fa-sign-out"></i>
-            <span class="icon-text">Logout</span>
-          </a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <main class="container my-5">
-    <div class="row">
-      <div class="col-12">
-        <div class="cart-header">
-          <h1 class="h3 mb-0"><i class="fa fa-shopping-cart me-2" style="color: #ff7e7e;"></i>Your Shopping Cart</h1>
-        </div>
-      </div>
-    </div>
-
-    {% if cart.items.all %}
-      <div class="row">
-        <div class="col-lg-8">
-          <!-- Cart Items -->
-          {% for item in cart.items.all %}
-            <div class="cart-item row align-items-center">
-              <div class="col-md-2 col-4 cart-img">
-                {% if item.product.image %}
-                  <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" class="img-fluid">
-                {% else %}
-                  <img src="{% static 'images/default.png' %}" alt="Default Image" class="img-fluid">
-                {% endif %}
-              </div>
-
-              <div class="col-md-4 col-8 item-details">
-                <h5>{{ item.product.title }}</h5>
-                <p class="text-muted small mb-0">{% if item.product.category %}{{ item.product.category|title }}{% endif %}</p>
-                <p class="text-primary mb-0">Rs. {{ item.product.price }}</p>
-              </div>
-
-              <div class="col-md-3 col-6 mt-3 mt-md-0 quantity-controls d-flex justify-content-center">
-                <form action="{% url 'cart:update_cart' item.id %}" method="POST" class="d-flex align-items-center">
-                  {% csrf_token %}
-                  <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control quantity-input">
-                  <button type="submit" class="btn update-btn ms-2">
-                    <i class="fa fa-refresh"></i>
-                  </button>
+            <!-- Search Bar -->
+            <div class="search-container">
+                <form class="search-form" action="{% url 'products:landing_page' %}" method="GET">
+                    <input class="search-input" type="search" name="q" placeholder="Search products..." aria-label="Search">
+                    <button class="search-btn" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </form>
-              </div>
+            </div>
 
-              <div class="col-md-3 col-6 text-md-end mt-3 mt-md-0 item-actions">
-                <p class="fw-bold mb-2" style="color: #ff7e7e;">Rs. {{ item.total_price|floatformat:2 }}</p>
-                <a href="{% url 'cart:remove_from_cart' item.id %}" class="btn remove-btn">
-                  <i class="fa fa-trash me-1"></i> Remove
+            <!-- User Icons -->
+            <div class="nav-icons">
+                <a href="{% url 'accounts:profile' %}" class="nav-icon-link" title="Profile">
+                    <i class="fas fa-user nav-icon"></i>
+                    <span class="icon-text">Profile</span>
                 </a>
-              </div>
+                <a href="{% url 'wishlist:view_wishlist' %}" class="nav-icon-link" title="Wishlist">
+                    <i class="fas fa-heart nav-icon"></i>
+                    <span class="icon-text">Wishlist</span>
+                    <span class="badge">{{ wishlist_count|default:0 }}</span>
+                </a>
+                <a href="{% url 'cart:view_cart' %}" class="nav-icon-link" title="Cart">
+                    <i class="fas fa-shopping-cart nav-icon"></i>
+                    <span class="icon-text">Cart</span>
+                    <span class="badge">{{ cart_count }}</span>
+                </a>
+                <a href="{% url 'accounts:logout' %}" class="nav-icon-link" title="Logout">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                    <span class="icon-text">Logout</span>
+                </a>
             </div>
-          {% endfor %}
         </div>
+    </nav>
 
-        <div class="col-lg-4">
-          <!-- Cart Summary -->
-          <div class="cart-summary">
-            <h4 class="mb-4"><i class="fa fa-receipt me-2" style="color: #ff7e7e;"></i>Order Summary</h4>
-
-            {% with total_items=cart.items.all|length %}
-              <div class="d-flex justify-content-between mb-2">
-                <span>Items ({{ total_items }})</span>
-                <span>Rs. {{ cart.total_price|floatformat:2 }}</span>
-              </div>
-            {% endwith %}
-
-            <div class="d-flex justify-content-between mb-2">
-              <span>Shipping</span>
-              <span>Rs. 0.00</span>
-            </div>
-
-            <div class="d-flex justify-content-between mb-2">
-              <span>Tax</span>
-              <span>Rs. {{ cart.tax|floatformat:2 }}</span>
-            </div>
-
-            <hr>
-
-            <div class="d-flex justify-content-between mb-4">
-              <span class="fw-bold">Total</span>
-              <span class="fw-bold" style="color: #ff7e7e;">Rs. {{ cart.final_total|floatformat:2 }}</span>
+    <main class="cart-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="cart-header">
+                        <h1 class="h3 mb-0"><i class="fas fa-shopping-cart me-2"></i>Your Shopping Cart</h1>
+                    </div>
+                </div>
             </div>
 
-            <form action="{% url 'orders:payment' %}" method="GET">
-              <button type="submit" class="btn place-order-btn">
-                <i class="fa fa-credit-card me-2"></i> Proceed to Checkout
-              </button>
-            </form>
+            {% if cart.items.all %}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Cart Items -->
+                        {% for item in cart.items.all %}
+                            <div class="cart-item row align-items-center">
+                                <div class="col-md-2 col-4 cart-img">
+                                    {% if item.product.image %}
+                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" class="img-fluid">
+                                    {% else %}
+                                        <img src="{% static 'images/default.png' %}" alt="Default Image" class="img-fluid">
+                                    {% endif %}
+                                </div>
 
-            <a href="{% url 'products:landing_page' %}" class="btn continue-shopping-btn">
-              <i class="fa fa-arrow-left me-2"></i> Continue Shopping
-            </a>
-          </div>
-        </div>
-      </div>
-    {% else %}
-      <div class="empty-cart">
-        <i class="fa fa-shopping-cart"></i>
-        <h3>Your cart is empty</h3>
-        <p>Looks like you haven't added anything to your cart yet.</p>
-        <a href="{% url 'products:landing_page' %}" class="btn place-order-btn" style="max-width: 250px;">
-          <i class="fa fa-arrow-left me-2"></i> Start Shopping
-        </a>
-      </div>
-    {% endif %}
-  </main>
+                                <div class="col-md-4 col-8 item-details">
+                                    <h5>{{ item.product.title }}</h5>
+                                    <p class="text-muted small mb-0">{% if item.product.category %}{{ item.product.category|title }}{% endif %}</p>
+                                    <p class="text-primary mb-0">Rs. {{ item.product.price }}</p>
+                                </div>
 
-  <footer class="footer-section mt-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">
-          <h5>About Us</h5>
-          <p>Learn more about A&K Accessories and Closet.</p>
-        </div>
-        <div class="col-md-3">
-          <h5>Contact</h5>
-          <ul class="list-unstyled">
-            <li>Email: ak077@gmail.com</li>
-            <li>Phone: +977 9866413343</li>
-            <li>Address: Kathmandu Online, Style City</li>
-          </ul>
-        </div>
-        <div class="col-md-3">
-          <h5>Help</h5>
-          <ul class="list-unstyled">
-            <li><a href="#">FAQs</a></li>
-            <li><a href="#">Shipping</a></li>
-            <li><a href="#">Returns</a></li>
-          </ul>
-        </div>
-        <div class="col-md-3">
-          <h5>Info</h5>
-          <ul class="list-unstyled">
-            <li><a href="#">Privacy</a></li>
-            <li><a href="#">Terms</a></li>
-            <li><a href="#">Careers</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="text-center py-4">
-        <p>&copy; 2025 A&K Accessories And Closet</p>
-      </div>
-    </div>
-  </footer>
+                                <div class="col-md-3 col-6 mt-3 mt-md-0 quantity-controls d-flex justify-content-center">
+                                    <form action="{% url 'cart:update_cart' item.id %}" method="POST" class="d-flex align-items-center">
+                                        {% csrf_token %}
+                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control quantity-input">
+                                        <button type="submit" class="btn update-btn ms-2">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
 
-  <!-- Bootstrap JS and dependencies -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Add quantity increment/decrement functionality
-      const quantityInputs = document.querySelectorAll('.quantity-input');
+                                <div class="col-md-3 col-6 text-md-end mt-3 mt-md-0 item-actions">
+                                    <p class="fw-bold mb-2" style="color: var(--primary-dark);">Rs. {{ item.total_price|floatformat:2 }}</p>
+                                    <a href="{% url 'cart:remove_from_cart' item.id %}" class="btn remove-btn">
+                                        <i class="fas fa-trash me-1"></i> Remove
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
 
-      quantityInputs.forEach(input => {
-        input.addEventListener('change', function() {
-          if (this.value < 1) {
-            this.value = 1;
-          }
+                    <div class="col-lg-4">
+                        <!-- Cart Summary -->
+                        <div class="cart-summary">
+                            <h4 class="mb-4"><i class="fas fa-receipt me-2"></i>Order Summary</h4>
+
+                            {% with total_items=cart.items.all|length %}
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Items ({{ total_items }})</span>
+                                    <span>Rs. {{ cart.total_price|floatformat:2 }}</span>
+                                </div>
+                            {% endwith %}
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Shipping</span>
+                                <span>Rs. 0.00</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Tax</span>
+                                <span>Rs. {{ cart.tax|floatformat:2 }}</span>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between mb-4">
+                                <span class="fw-bold">Total</span>
+                                <span class="fw-bold" style="color: var(--primary-dark);">Rs. {{ cart.final_total|floatformat:2 }}</span>
+                            </div>
+
+                            <form action="{% url 'orders:payment' %}" method="GET">
+                                <button type="submit" class="btn place-order-btn">
+                                    <i class="fas fa-credit-card me-2"></i> Proceed to Checkout
+                                </button>
+                            </form>
+
+                            <a href="{% url 'products:landing_page' %}" class="btn continue-shopping-btn">
+                                <i class="fas fa-arrow-left me-2"></i> Continue Shopping
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Your cart is empty</h3>
+                    <p>Looks like you haven't added anything to your cart yet.</p>
+                    <a href="{% url 'accounts:dashboard' %}" class="btn place-order-btn" style="max-width: 250px;">
+                        <i class="fas fa-arrow-left me-2"></i> Start Shopping
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <a href="{% url 'accounts:dashboard' %}" class="footer-logo">A&K</a>
+                    <p>Ethically made fashion for every body type. Sustainable, stylish, and made with love.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <div class="footer-links">
+                        <h5>Shop</h5>
+                        <ul>
+                            <li><a href="{% url 'products:clothing' %}">Clothing</a></li>
+                            <li><a href="{% url 'products:accessories' %}">Accessories</a></li>
+                            <li><a href="{% url 'products:eco_friendly' %}">ECO-Friendly</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="footer-links">
+                        <h5>Help</h5>
+                        <ul>
+                            <li><a href="#">FAQs</a></li>
+                            <li><a href="#">Shipping & Returns</a></li>
+                            <li><a href="#">Size Guide</a></li>
+                            <li><a href="#">Track Order</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="footer-links">
+                        <h5>Contact</h5>
+                        <ul>
+                            <li><i class="fas fa-envelope me-2"></i> ak077@gmail.com</li>
+                            <li><i class="fas fa-phone me-2"></i> +977 9866413343</li>
+                            <li><i class="fas fa-map-marker-alt me-2"></i> Kathmandu, Style City</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 A&K Accessories And Closet. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add quantity increment/decrement functionality
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+
+            quantityInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    if (this.value < 1) {
+                        this.value = 1;
+                    }
+                });
+            });
+
+            // Add animation for removed items
+            const removeButtons = document.querySelectorAll('.remove-btn');
+
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const cartItem = this.closest('.cart-item');
+
+                    cartItem.style.opacity = '0';
+                    cartItem.style.transform = 'translateX(20px)';
+
+                    setTimeout(() => {
+                        window.location.href = this.getAttribute('href');
+                    }, 300);
+                });
+            });
         });
-      });
-
-      // Add animation for removed items
-      const removeButtons = document.querySelectorAll('.remove-btn');
-
-      removeButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          e.preventDefault();
-          const cartItem = this.closest('.cart-item');
-
-          cartItem.style.opacity = '0';
-          cartItem.style.transform = 'translateX(20px)';
-
-          setTimeout(() => {
-            window.location.href = this.getAttribute('href');
-          }, 300);
-        });
-      });
-    });
-  </script>
+    </script>
 </body>
 </html>
