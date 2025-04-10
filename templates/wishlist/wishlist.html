@@ -4,112 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Wishlist - A&K Accessories And Closet</title>
-    <link rel="stylesheet" href="{% static 'css/explore.css' %}">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dash-style.css' %}">
     <style>
-        :root {
-            --primary-color: #ff7e7e;
-            --secondary-color: #ffb6c1;
-            --accent-color: #ff5252;
-            --light-bg: #ffe4e6;
-            --card-bg: #ffffff;
-            --text-dark: #333333;
-            --text-medium: #5c5c5c;
-            --text-light: #777777;
-            --success-color: #4CAF50;
-            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-bg);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        /* Header - Matching the dash-style */
-        .navbar {
-            padding: 20px 0;
-            background-color: var(--light-bg);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 30px;
-        }
-
-        .navbar-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-dark) !important;
-            letter-spacing: 1px;
-            transition: var(--transition);
-        }
-
-        .navbar-brand:hover {
-            color: var(--primary-color) !important;
-        }
-
-        .navbar-nav {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-link {
-            color: var(--text-dark);
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        .icon-link {
-            margin-left: 20px;
-            color: var(--text-dark);
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .icon-link:hover {
-            color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        .wishlist-count, .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background-color: var(--accent-color);
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Wishlist Main Content */
+        /* Custom Wishlist Styles */
         .wishlist-section {
-            padding: 4rem 0;
-        }
-
-        .wishlist-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 30px;
+            padding: 5rem 0;
+            background-color: var(--light-bg);
         }
 
         .wishlist-header {
@@ -118,33 +24,17 @@
         }
 
         .wishlist-header h2 {
-            font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
-            color: var(--text-dark);
             margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .wishlist-header h2:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--primary-color);
         }
 
         .wishlist-header p {
-            color: var(--text-medium);
+            color: var(--light-text);
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        /* Product Grid */
         .wishlist-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -152,20 +42,20 @@
         }
 
         .wishlist-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
+            background-color: var(--white);
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
         }
 
         .wishlist-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--shadow-md);
         }
 
         .wishlist-image-container {
-            height: 320px;
+            height: 300px;
             overflow: hidden;
             position: relative;
         }
@@ -174,24 +64,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.8s ease;
+            transition: var(--transition);
         }
 
         .wishlist-card:hover .wishlist-image-container img {
-            transform: scale(1.08);
-        }
-
-        .wishlist-badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background-color: var(--accent-color);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            z-index: 2;
+            transform: scale(1.05);
         }
 
         .wishlist-actions {
@@ -211,7 +88,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-sm);
             transition: var(--transition);
             border: none;
             cursor: pointer;
@@ -219,11 +96,11 @@
 
         .wishlist-action-btn i {
             font-size: 16px;
-            color: var(--text-medium);
+            color: var(--secondary-color);
         }
 
         .wishlist-action-btn:hover {
-            background: var(--primary-color);
+            background: var(--primary-dark);
         }
 
         .wishlist-action-btn:hover i {
@@ -238,23 +115,23 @@
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--text-dark);
+            color: var(--dark-text);
             transition: var(--transition);
         }
 
         .wishlist-card:hover .wishlist-title {
-            color: var(--primary-color);
+            color: var(--primary-dark);
         }
 
         .wishlist-price {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--primary-dark);
             margin-bottom: 0.8rem;
         }
 
         .wishlist-description {
-            color: var(--text-light);
+            color: var(--light-text);
             font-size: 0.9rem;
             line-height: 1.6;
             margin-bottom: 1.2rem;
@@ -271,7 +148,7 @@
             padding-top: 1rem;
             border-top: 1px solid #f0f0f0;
             font-size: 0.8rem;
-            color: var(--text-light);
+            color: var(--light-text);
         }
 
         /* Empty Wishlist State */
@@ -279,23 +156,26 @@
             text-align: center;
             padding: 6rem 0;
             grid-column: 1 / -1;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow-sm);
         }
 
         .empty-wishlist i {
             font-size: 5rem;
-            color: var(--secondary-color);
+            color: var(--primary-light);
             margin-bottom: 2rem;
         }
 
         .empty-wishlist h3 {
             font-size: 1.8rem;
-            color: var(--text-dark);
+            color: var(--dark-text);
             margin-bottom: 1rem;
             font-weight: 500;
         }
 
         .empty-wishlist p {
-            color: var(--text-medium);
+            color: var(--light-text);
             font-size: 1.1rem;
             margin-bottom: 2rem;
             max-width: 500px;
@@ -303,151 +183,82 @@
             margin-right: auto;
         }
 
-        .wishlist-btn {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(255, 126, 126, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .wishlist-btn:hover {
-            background: linear-gradient(to right, var(--accent-color), var(--primary-color));
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 82, 82, 0.4);
-        }
-
-        /* Notification Styles */
-        .notification {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background-color: var(--success-color);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
-        }
-
-        .notification.error {
-            background-color: var(--accent-color);
-        }
-
-        .notification i {
-            font-size: 20px;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 992px) {
+        @media (max-width: 768px) {
             .wishlist-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-
-            .wishlist-image-container {
-                height: 280px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .wishlist-header h2 {
-                font-size: 2rem;
-            }
-
-            .wishlist-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-                gap: 1.5rem;
-            }
-
-            .wishlist-image-container {
-                height: 260px;
             }
         }
 
         @media (max-width: 576px) {
             .wishlist-header h2 {
-                font-size: 1.8rem;
-            }
-
-            .wishlist-grid {
-                grid-template-columns: 1fr;
+                font-size: 2rem;
             }
 
             .empty-wishlist i {
                 font-size: 4rem;
             }
-
-            .empty-wishlist h3 {
-                font-size: 1.5rem;
-            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="container">
-                <div class="navbar-brand">
-                    <a href="{% url 'accounts:dashboard' %}">
-                        <span style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: inherit; letter-spacing: 1px;">A&K</span>
-                    </a>
-                </div>
-                <div class="navbar-menu">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'products:clothing' %}">Clothing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'products:accessories' %}">Accessories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'products:eco_friendly' %}">ECO-Friendly</a>
-                        </li>
-                    </ul>
-                    <div class="nav-icons">
-                        <a href="{% url 'wishlist:view_wishlist' %}" class="icon-link">
-                            <i class="fas fa-heart"></i>
-                            <span class="wishlist-count">{{ wishlist.items.count }}</span>
-                        </a>
-                        <a href="{% url 'cart:view_cart' %}" class="icon-link cart-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-count">{{ cart_count }}</span>
-                        </a>
-                        <a href="{% url 'accounts:logout' %}" class="icon-link">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </a>
-                    </div>
-                </div>
+    <!-- Modern Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Brand and Category Links -->
+            <div class="d-flex align-items-center">
+                <a class="navbar-brand" href="{% url 'accounts:dashboard' %}">A&K</a>
+                <ul class="navbar-nav ms-4 d-none d-lg-flex">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:clothing' %}?category=clothing">Clothing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:accessories' %}?category=accessories">Accessories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:eco_friendly' %}?category=eco_friendly">ECO-Friendly</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <form class="search-form" action="{% url 'products:landing_page' %}" method="GET">
+                    <input class="search-input" type="search" name="q" placeholder="Search products..." aria-label="Search">
+                    <button class="search-btn" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- User Icons -->
+            <div class="nav-icons">
+                <a href="{% url 'accounts:profile' %}" class="nav-icon-link" title="Profile">
+                    <i class="fas fa-user nav-icon"></i>
+                    <span class="icon-text">Profile</span>
+                </a>
+                <a href="{% url 'wishlist:view_wishlist' %}" class="nav-icon-link" title="Wishlist">
+                    <i class="fas fa-heart nav-icon"></i>
+                    <span class="icon-text">Wishlist</span>
+                    <span class="badge" id="wishlist-count">{{ wishlist.items.count }}</span>
+                </a>
+                <a href="{% url 'cart:view_cart' %}" class="nav-icon-link" title="Cart">
+                    <i class="fas fa-shopping-cart nav-icon"></i>
+                    <span class="icon-text">Cart</span>
+                    <span class="badge" id="cart-count">{{ cart_count }}</span>
+                </a>
+                <a href="{% url 'accounts:logout' %}" class="nav-icon-link" title="Logout">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                    <span class="icon-text">Logout</span>
+                </a>
+            </div>
+        </div>
+    </nav>
 
     <!-- Notification Container -->
     <div id="notification-container" style="position: fixed; top: 80px; right: 20px; z-index: 1000;"></div>
 
     <main class="wishlist-section">
-        <div class="wishlist-container">
+        <div class="container">
             <div class="wishlist-header">
                 <h2>My Wishlist</h2>
                 <p>Your curated collection of favorite items</p>
@@ -493,7 +304,7 @@
                     <i class="far fa-heart"></i>
                     <h3>Your wishlist is empty</h3>
                     <p>Start saving your favorite items to create your perfect collection</p>
-                    <a href="{% url 'products:clothing' %}" class="wishlist-btn">Explore Products</a>
+                    <a href="{% url 'products:clothing' %}" class="btn btn-primary">Explore Products</a>
                 </div>
             {% endif %}
         </div>
@@ -517,116 +328,72 @@
             }, 3000);
         }
 
-       function removeFromWishlist(url, productId) {
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "removed") {
-            // Immediately remove the item from UI
-            document.querySelector(`.wishlist-card[data-product-id="${productId}"]`).remove();
+        function removeFromWishlist(url, productId) {
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "removed") {
+                    // Immediately remove the item from UI
+                    document.querySelector(`.wishlist-card[data-product-id="${productId}"]`).remove();
 
-            // Update counter
-            document.querySelector('.wishlist-count').textContent = data.wishlist_count;
+                    // Update counter
+                    document.querySelector('#wishlist-count').textContent = data.wishlist_count;
 
-            // Show empty state if no items left
-            if (data.wishlist_count === 0) {
-                document.querySelector('.wishlist-grid').innerHTML = `
-                    <div class="empty-wishlist" style="grid-column: 1 / -1;">
-                        <i class="far fa-heart"></i>
-                        <h3>Your wishlist is empty</h3>
-                        <p>Start saving your favorite items to create your perfect collection</p>
-                        <a href="{% url 'products:clothing' %}" class="wishlist-btn">Explore Products</a>
-                    </div>
-                `;
-            }
-            showNotification('Removed from wishlist!');
-        } else {
-            showNotification(data.message || 'Failed to remove item', 'error');
+                    // Show empty state if no items left
+                    if (data.wishlist_count === 0) {
+                        document.querySelector('.wishlist-grid').innerHTML = `
+                            <div class="empty-wishlist" style="grid-column: 1 / -1;">
+                                <i class="far fa-heart"></i>
+                                <h3>Your wishlist is empty</h3>
+                                <p>Start saving your favorite items to create your perfect collection</p>
+                                <a href="{% url 'products:clothing' %}" class="btn btn-primary">Explore Products</a>
+                            </div>
+                        `;
+                    }
+                    showNotification('Removed from wishlist!');
+                } else {
+                    showNotification(data.message || 'Failed to remove item', 'error');
+                }
+            })
+            .catch(error => {
+                showNotification('Failed to remove item', 'error');
+            });
         }
-    })
-    .catch(error => {
-        showNotification('Failed to remove item', 'error');
-    });
-}
 
-       function addToCart(url, productName, productId) {
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Check for both possible success responses
-        if (data.success === true || data.status === "success") {
-            document.querySelector('.cart-count').textContent = data.cart_count;
-            showNotification(`${productName} added to cart!`); // Success message
-        } else {
-            showNotification(data.message || 'Failed to add to cart', 'error');
-        }
-    })
-    .catch(error => {
-        showNotification('Failed to add to cart', 'error');
-    });
-}function addToCart(url, productName, productId) {
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}',
-        },
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Network error');
-        return response.json();
-    })
-    .then(data => {
-        // Debug: Check the actual response format
-        console.log("Add to Cart Response:", data);
-
-        // Handle all possible success response formats
-        if (data.success === true ||
-            data.status === "success" ||
-            data.added === true ||
-            (data.cart_count !== undefined && data.cart_count >= 0)) {
-
-            // Update cart counter
-            const cartCounter = document.querySelector('.cart-count');
-            if (cartCounter && data.cart_count !== undefined) {
-                cartCounter.textContent = data.cart_count;
-            }
-
-            showNotification(`${productName} added to cart!`);
-        } else {
-            showNotification(data.message || 'Failed to add to cart', 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Add to Cart Error:', error);
-        showNotification('Failed to add to cart', 'error');
-    });
-}
-
-        function showEmptyWishlist() {
-            const wishlistGrid = document.querySelector('.wishlist-grid');
-            if (wishlistGrid) {
-                wishlistGrid.innerHTML = `
-                    <div class="empty-wishlist" style="grid-column: 1 / -1;">
-                        <i class="far fa-heart"></i>
-                        <h3>Your wishlist is empty</h3>
-                        <p>Start saving your favorite items to create your perfect collection</p>
-                        <a href="{% url 'products:clothing' %}" class="wishlist-btn">Explore Products</a>
-                    </div>
-                `;
-            }
+        function addToCart(url, productName, productId) {
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+            })
+            .then(data => {
+                if (data.success === true || data.status === "success" || data.added === true || (data.cart_count !== undefined && data.cart_count >= 0)) {
+                    // Update cart counter
+                    const cartCounter = document.querySelector('#cart-count');
+                    if (cartCounter && data.cart_count !== undefined) {
+                        cartCounter.textContent = data.cart_count;
+                    }
+                    showNotification(`${productName} added to cart!`);
+                } else {
+                    showNotification(data.message || 'Failed to add to cart', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Add to Cart Error:', error);
+                showNotification('Failed to add to cart', 'error');
+            });
         }
     </script>
 </body>

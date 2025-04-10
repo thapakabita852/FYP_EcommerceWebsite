@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Product
 from django.core.paginator import Paginator
+from apps.products.models import Product
 
 def landing_page(request):
     category = request.GET.get('category')
@@ -151,13 +151,6 @@ def accessories_view(request):
 
 def about_us_view(request):
     return render(request, 'products/about_us.html')
-
-
-# products/views.py
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from .models import Product
-
 
 def shop_now(request):
     category = request.GET.get('category', 'all')

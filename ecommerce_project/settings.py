@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.cart',
     'apps.orders',
-    'apps.wishlist',  # Added missing comma
+    'apps.wishlist',
 ]
 
 
