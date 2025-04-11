@@ -32,15 +32,26 @@
         </ul>
       </div>
 
-      <!-- Search Bar -->
-      <div class="search-container">
-        <form class="search-form" action="{% url 'products:landing_page' %}" method="GET">
-          <input class="search-input" type="search" name="q" placeholder="Search products..." aria-label="Search">
-          <button class="search-btn" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
-      </div>
+    <form class="d-flex" action="{% url 'products:search_results' %}" method="GET" style="max-width: 400px; width: 100%;">
+    <input
+        class="form-control search-input"
+        type="search"
+        name="q"
+        placeholder="Search products..."
+        aria-label="Search"
+        style="height: 40px; border-radius: 20px 0 0 20px;"
+        autocomplete="off"
+        id="searchInput"
+        required
+    />
+    <button
+        class="btn"
+        type="submit"
+        style="height: 40px; width: 40px; background-color: #e91e63; color: white; border-radius: 0 20px 20px 0;"
+    >
+        <i class="fa fa-search"></i>
+    </button>
+</form>
 
       <!-- User Icons -->
       <div class="nav-icons">
@@ -323,6 +334,77 @@
         });
       });
     });
+    document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsContainer = document.querySelector('.search-suggestions');
+    const suggestionsList = document.querySelector('.suggestions-container');
+    let debounceTimer;
+
+    searchInput.addEventListener('input', function(e) {
+        clearTimeout(debounceTimer);
+        const query = e.target.value.trim();
+
+        if (query.length < 2) {
+            suggestionsContainer.style.display = 'none';
+            return;
+        }
+
+        debounceTimer = setTimeout(() => {
+            fetch(`/search/suggestions/?q=${encodeURIComponent(query)}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.suggestions && data.suggestions.length > 0) {
+                        suggestionsList.innerHTML = data.suggestions.map(item => `
+                            <div class="suggestion-item" data-url="${item.url}">
+                                <img src="${item.image || '{% static 'images/default.png' %}'}"
+                                     class="suggestion-img"
+                                     alt="${item.title}"
+                                     onerror="this.src='{% static 'images/default.png' %}'">
+                                <div class="suggestion-text">
+                                    <div class="suggestion-title">${item.title}</div>
+                                    <div class="suggestion-price">Rs. ${item.price}</div>
+                                </div>
+                            </div>
+                        `).join('');
+                        suggestionsContainer.style.display = 'block';
+                    } else {
+                        suggestionsList.innerHTML = `
+                            <div class="no-suggestions">
+                                No products found for "${query}"
+                            </div>
+                        `;
+                        suggestionsContainer.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching suggestions:', error);
+                    suggestionsContainer.style.display = 'none';
+                });
+        }, 300);
+    });
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+            suggestionsContainer.style.display = 'none';
+        }
+    });
+
+    // Handle suggestion click
+    suggestionsList.addEventListener('click', function(e) {
+        const item = e.target.closest('.suggestion-item');
+        if (item) {
+            window.location.href = item.dataset.url;
+        }
+    });
+});
   </script>
 </body>
 </html>

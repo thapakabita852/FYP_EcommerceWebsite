@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.cart',
     'apps.orders',
     'apps.wishlist',
+    'apps.khalti_payment',
 ]
 
 
@@ -145,3 +146,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ashkab0777@gmail.com'
 EMAIL_HOST_PASSWORD = 'dbyf iiyo ihyq klko'
 DEFAULT_FROM_EMAIL = 'ashkab0777@gmail.com'
+
+KHALTI_PUBLIC_KEY = "e503541473724802895bef38da6cd53a"
+KHALTI_SECRET_KEY = "e8fcebbe380c439db54da32065ec4233"
+KHALTI_VERIFY_URL = "https://khalti.com/api/v2/payment/verify/"
