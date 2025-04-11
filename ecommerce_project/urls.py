@@ -26,6 +26,8 @@ urlpatterns = [
     path('', include('apps.products.urls')),
     path('orders/', include('apps.orders.urls')),
     path('wishlist/', include('apps.wishlist.urls')),
+    path('admin/', admin.site.urls),
+    path('khalti/', include('apps.khalti_payment.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class Product(models.Model):
     objects = None
@@ -134,14 +135,26 @@ class Product(models.Model):
         blank=True,
         null=True
     )
-
     created_at = models.DateTimeField(auto_now_add=True)
     sales_count = models.IntegerField(default=0)
 
-    class AboutUs(models.Model):
-        title = models.CharField(max_length=255)
-        description = models.TextField()
-        team_image = models.ImageField(upload_to='about_us_images/', null=True, blank=True)
+    def get_absolute_url(self):
+        if self.category == 'clothing':
+            return reverse('products:clothing') + f'?product_id={self.id}'
+        elif self.category == 'accessories':
+            return reverse('products:accessories') + f'?product_id={self.id}'
+        elif self.category == 'eco_friendly':
+            return reverse('products:eco_friendly') + f'?product_id={self.id}'
+        return reverse('products:landing')
+
+    def str(self):
+        return self.title
+
+
+class AboutUs(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    team_image = models.ImageField(upload_to='about_us_images/', null=True, blank=True)
 
     def str(self):
         return self.title

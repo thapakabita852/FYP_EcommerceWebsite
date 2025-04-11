@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from apps.products.models import Product
+from django.http import JsonResponse
+from django.db.models import Q
+
 
 def landing_page(request):
     category = request.GET.get('category')
@@ -170,3 +173,43 @@ def shop_now(request):
 
     return render(request, 'products/shop_now.html', {'products': page_obj})
 
+def search_suggestions(request):
+    query = request.GET.get('q', '').strip()
+    if query:
+        products = Product.objects.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__icontains=query)
+        )[:5]
+
+        suggestions = [{
+            'title': product.title,
+            'url': product.get_absolute_url(),
+            'image': product.image.url if product.image else '',
+            'price': str(product.price)
+        } for product in products]
+    else:
+        suggestions = []
+
+    return JsonResponse({'suggestions': suggestions})
+
+
+def search_results(request):
+    query = request.GET.get('q', '').strip()
+
+    if query:
+        products = Product.objects.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__icontains=query)
+        ).order_by('-created_at')
+        message = f'Search results for "{query}"'
+    else:
+        products = Product.objects.none()
+        message = "Please enter a search term"
+
+    return render(request, 'products/search_results.html', {
+        'products': products,
+        'query': query,
+        'message': message
+    })

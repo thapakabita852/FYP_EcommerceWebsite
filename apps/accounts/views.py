@@ -1,4 +1,3 @@
-
 import re
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
@@ -10,14 +9,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile
 from apps.orders.models import Order
 from apps.products.models import Product
-from django.core.validators import validate_email
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
-from django.conf import settings
-from django.utils.encoding import force_str
+
 
 def auth_view(request):
     return render(request, 'accounts/login_signup.html')
