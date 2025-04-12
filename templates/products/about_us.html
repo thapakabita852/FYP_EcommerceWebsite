@@ -263,12 +263,26 @@
 
       <!-- Search Bar -->
       <div class="search-container">
-        <form class="search-form" action="{% url 'products:landing_page' %}" method="GET">
-          <input class="search-input" type="search" name="q" placeholder="Search products..." aria-label="Search">
-          <button class="search-btn" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
+          <form class="d-flex" action="{% url 'products:search_results' %}" method="GET" style="max-width: 400px; width: 100%;">
+    <input
+        class="form-control search-input"
+        type="search"
+        name="q"
+        placeholder="Search products..."
+        aria-label="Search"
+        style="height: 40px; border-radius: 20px 0 0 20px;"
+        autocomplete="off"
+        id="searchInput"
+        required
+    />
+    <button
+        class="btn"
+        type="submit"
+        style="height: 40px; width: 40px; background-color: #e91e63; color: white; border-radius: 0 20px 20px 0;"
+    >
+        <i class="fa fa-search"></i>
+    </button>
+</form>
       </div>
 
       <!-- User Icons -->

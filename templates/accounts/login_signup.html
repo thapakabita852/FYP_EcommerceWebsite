@@ -9,6 +9,7 @@
   <title>A&K Accessories And Closet</title>
 </head>
 <body>
+<a href="{% url 'products:landing_page' %}" class="close-button" title="Go to Landing Page">×</a>
   {% if messages %}
     <div class="messages">
       {% for message in messages %}
@@ -18,7 +19,6 @@
       {% endfor %}
     </div>
   {% endif %}
-
   <div class="container" id="container">
     <div class="form-container sign-up-container">
       <form action="{% url 'accounts:signup' %}" method="POST">
