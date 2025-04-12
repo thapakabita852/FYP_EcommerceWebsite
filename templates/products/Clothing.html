@@ -394,5 +394,83 @@ function updateWishlistCount() {
     });
 }
     </script>
-  </body>
+
+    <!-- Notification container -->
+    <div id="notificationContainer" style="position: fixed; top: 20px; right: 20px; z-index: 3000;"></div>
+
+
+    <script>
+      function showNotification(message, type = 'success') {
+        const container = document.getElementById('notificationContainer');
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+          <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+          ${message}
+        `;
+        Object.assign(notification.style, {
+          background: '#333',
+          color: '#fff',
+          padding: '12px 20px',
+          marginBottom: '10px',
+          borderRadius: '8px',
+          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)',
+          fontSize: '14px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+        });
+        container.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+      }
+
+      function addToCart(url) {
+        fetch(url, {
+          method: "GET",
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              updateCartCount();
+              showNotification("Item added to cart!");
+            } else {
+              showNotification("Failed to add item.", "error");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showNotification("Something went wrong!", "error");
+          });
+      }
+
+      function toggleWishlist(url) {
+        fetch(url, {
+          method: 'GET',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'added') {
+            updateWishlistCount();
+            showNotification("Added to wishlist!");
+          } else if (data.status === 'exists') {
+            showNotification("Already in wishlist.");
+          } else {
+            showNotification("Failed to add to wishlist.", "error");
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          showNotification("Something went wrong!", "error");
+        });
+      }
+    </script>
+</body>
 </html>
+
