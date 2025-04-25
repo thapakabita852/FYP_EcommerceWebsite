@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Khalti Payment</title>
+  <script src="https://khalti.com/static/khalti-checkout.js"></script>
+</head>
+<body>
+  <h2>Pay with Khalti</h2>
+  <p>Product: {{ product_name }}</p>
+  <p>Amount: NPR {{ amount }}</p>
+
+  <button id="pay-btn">Pay Now</button>
+
+  <script>
+    const config = {
+      publicKey: "{{ khalti_public_key }}",
+      productIdentity: "{{ transaction_id }}",
+      productName: "{{ product_name }}",
+      productUrl: "http://localhost:8000/khalti/pay/",
+      eventHandler: {
+        onSuccess(payload) {
+          fetch("{% url 'khalti_verify' %}", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+              token: payload.token,
+              amount: payload.amount
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              window.location.href = "{% url 'payment_success' %}";
+            } else {
+              alert("❌ Payment Verification Failed.");
+            }
+          });
+        },
+        onError(error) {
+          console.error("Error:", error);
+        },
+        onClose() {
+          console.log("Khalti popup closed");
+        }
+      },
+      paymentPreference: ["KHALTI"]
+    };
+
+    const checkout = new KhaltiCheckout(config);
+    document.getElementById("pay-btn").onclick = function () {
+      checkout.show({ amount: {{ amount|floatformat:"0" }} * 100 });
+    };
+  </script>
+</body>
+</html>
+
