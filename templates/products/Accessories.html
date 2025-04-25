@@ -143,14 +143,6 @@
                         <li class="nav-item active"><a class="nav-link" href="{% url 'products:accessories' %}">Accessories</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'products:eco_friendly' %}">ECO-Friendly</a></li>
                     </ul>
-                    <a href="{% url 'wishlist:view_wishlist' %}" class="icon-link"><i class="fas fa-heart"></i></a>
-                    <a href="{% url 'cart:view_cart' %}" class="icon-link cart-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count">{% if cart_count %}{{ cart_count }}{% else %}0{% endif %}</span>
-                    </a>
-                    <a href="{% url 'accounts:logout' %}" class="icon-link">
-                        <i class="fas fa-sign-out"></i>
-                    </a>
                 </div>
             </div>
         </nav>
