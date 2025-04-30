@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from django.shortcuts import get_object_or_404
 from apps.orders.models import Order
 from apps.products.models import Product
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -136,10 +137,22 @@ def dashboard_view(request):
 def profile_view(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
     orders = Order.objects.filter(user=request.user).order_by('-date')
+    if request.user.is_staff:
+        orders = Order.objects.all().order_by('-date')
+
     return render(request, 'accounts/profile.html', {
         'profile': profile,
         'orders': orders
     })
+
+
+@login_required
+def update_order_status(request, order_id, new_status):
+    if request.user.is_staff:
+        order = get_object_or_404(Order, id=order_id)
+        order.status = new_status
+        order.save()
+    return redirect('accounts:profile')
 
 
 @login_required
