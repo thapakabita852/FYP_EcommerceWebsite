@@ -28,6 +28,7 @@ urlpatterns = [
     path('wishlist/', include('apps.wishlist.urls')),
     path('admin/', admin.site.urls),
     path('khalti/', include('apps.khalti_payment.urls')),
+    path('support/', include(('apps.chatbot.urls', 'chatbot'), namespace='chatbot')),
 ]
 
 if settings.DEBUG:

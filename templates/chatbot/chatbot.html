@@ -1,0 +1,56 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot - A&K Accessories And Closet</title>
+    <link rel="stylesheet" href="{% static 'css/explore.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/chatbot.css' %}" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="container">
+          <div class="navbar-brand">
+            <a
+              class="navbar-brand"
+              href="{% url 'accounts:dashboard' %}"
+              style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #ff5252 !important; letter-spacing: 1px;"
+              >A&K</a
+            >
+          </div>
+          <div class="navbar-toggle">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+          <div class="navbar-menu">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="{% url 'products:clothing' %}">Clothing</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'products:accessories' %}">Accessories</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'products:eco_friendly' %}">ECO-Friendly</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <div class="message bot-message">Hello! How can I help you today?</div>
+        </div>
+        <div class="chat-input"><input type="text" id="user-input" placeholder="Type your message..."><button id="send-button">Send</button></div>
+      </div>
+      <script src="{% static 'js/chatbot.js' %}"></script>
+  </body>
+</html>
