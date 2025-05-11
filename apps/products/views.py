@@ -11,13 +11,14 @@ def landing_page(request):
         products = Product.objects.filter(category=category)
     else:
         products = Product.objects.all()
+    products = products.order_by('id') # Add ordering before pagination
 
     # Pagination
     paginator = Paginator(products, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # ✅ Select products that are **manually** marked as trending
+    # ✅ Select products that are *manually* marked as trending
     trending_products = Product.objects.filter(is_trending=True).order_by('-created_at')[:6]
 
     # Optional: If no trending products exist, return None (or handle differently)
@@ -167,6 +168,7 @@ def shop_now(request):
     if search_query:
         products = products.filter(name__icontains=search_query)
 
+    products = products.order_by('id') # Add ordering before pagination
     paginator = Paginator(products, 9)  # Show 9 products per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -211,5 +213,4 @@ def search_results(request):
     return render(request, 'products/search_results.html', {
         'products': products,
         'query': query,
-        'message': message
-    })
+        'message':message})

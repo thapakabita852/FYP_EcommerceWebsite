@@ -2,47 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Payment - A&K Accessories And Closet</title>
-  <link rel="stylesheet" href="{% static 'css/payment.css' %}">
-  <script defer src="{% static 'js/payment.js' %}"></script>
+  <title>Stripe Payment</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dash-style.css' %}">
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-  <nav>
-    <div class="nav-container">
-      <a href="{% url 'products:landing_page' %}" class="logo">A&K Accessories And Closet</a>
-      <div class="nav-links">
-        <a href="{% url 'accounts:profile' %}">Profile</a>
-        <a href="{% url 'accounts:logout' %}">Logout</a>
-      </div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+    <a class="navbar-brand" href="{% url 'accounts:dashboard' %}">A&K</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
+      </ul>
     </div>
   </nav>
 
-  <div class="payment-container">
-    <h1>Payment Information</h1>
-    <p>Total Amount: Rs.{{ total_price }}</p>
-
-    <form id="payment-form" action="{% url 'orders:process_payment' %}" method="POST">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="cardholder">Cardholder Name</label>
-        <input type="text" id="cardholder" name="cardholder" required>
-      </div>
-      <div class="form-group">
-        <label for="cardnumber">Card Number</label>
-        <input type="text" id="cardnumber" name="cardnumber" maxlength="16" required>
-      </div>
-      <div class="form-group-inline">
-        <div class="form-group">
-          <label for="expiry">Expiry Date</label>
-          <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required>
-        </div>
-        <div class="form-group">
-          <label for="cvv">CVV</label>
-          <input type="text" id="cvv" name="cvv" maxlength="3" required>
-        </div>
-      </div>
-      <button type="submit" class="btn">Pay Now</button>
-    </form>
+  <div class="container text-center my-5">
+    <h1 class="mb-4">Processing Payment</h1>
+    <p>Click below to complete your secure checkout with Stripe.</p>
+    <button id="checkout-button" class="btn btn-primary btn-lg">Proceed to Stripe Checkout</button>
   </div>
+
+  <script>
+    const stripe = Stripe("{{pk_test_51RJfb6G4cwLKRrj0alvsPQmVTeG4QtEkNMnYI6vFTKVYHg7mCzQdkXQLuwLabSvET4W5jpijBkvLz14I9uZFbtVc00IzsVV2wK}}");
+
+    document.getElementById("checkout-button").addEventListener("click", function () {
+      fetch("{% url 'orders:create_checkout_session' %}")
+        .then(response => response.json())
+        .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+        .catch(error => console.error("Stripe Error:", error));
+    });
+  </script>
 </body>
 </html>

@@ -6,39 +6,6 @@ from apps.cart.models import Cart, CartItem
 
 
 @login_required
-def place_order(request):
-    # Get the current user's cart
-    cart = get_object_or_404(Cart, user=request.user)
-    if not cart.items.exists():
-        messages.error(request, "Your cart is empty!")
-        return redirect('cart:view_cart')
-
-    # Create a new order
-    order = Order.objects.create(user=request.user, status="Processing")
-
-    total_price = 0
-    # Loop through each cart item and create order items
-    for item in cart.items.all():
-        OrderItem.objects.create(
-            order=order,
-            product=item.product,
-            quantity=item.quantity,
-            price=item.product.price  # or item.product.price * item.quantity if you prefer
-        )
-        total_price += item.product.price * item.quantity
-
-    # Update order total price
-    order.total_price = total_price
-    order.save()
-
-    # Clear the cart (delete all items)
-    cart.items.all().delete()
-
-    messages.success(request, "Your order has been placed successfully!")
-    return redirect('orders:order_confirmation', order_id=order.id)
-
-
-@login_required
 def order_confirmation(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     return render(request, 'orders/order_confirmation.html', {'order': order})

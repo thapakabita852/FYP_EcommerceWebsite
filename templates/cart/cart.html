@@ -366,11 +366,10 @@
                                 <span class="fw-bold" style="color: var(--primary-dark);">Rs. {{ cart.final_total|floatformat:2 }}</span>
                             </div>
 
-                            <form action="{% url 'orders:payment' %}" method="GET">
-                                <button type="submit" class="btn place-order-btn">
-                                    <i class="fas fa-credit-card me-2"></i> Proceed to Checkout
-                                </button>
-                            </form>
+                           <form action="{% url 'stripe:create_checkout_session' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="total_amount" value="{{ cart.final_total|floatformat:2 }}"> {# Add this line #}
+            <button type="submit" class="place-order-btn mt-3">Place Order</button></form>
 
                             <a href="{% url 'products:landing_page' %}" class="btn continue-shopping-btn">
                                 <i class="fas fa-arrow-left me-2"></i> Continue Shopping
