@@ -255,7 +255,7 @@
     </nav>
 
     <!-- Notification Container -->
-    <div id="notification-container" style="position: fixed; top: 80px; right: 20px; z-index: 1000;"></div>
+    <div id="notification-container" style="position: fixed; top: 0; right: 0; z-index: 1000;"></div>
 
     <main class="wishlist-section">
         <div class="container">
@@ -379,20 +379,20 @@
                 return response.json();
             })
             .then(data => {
-                if (data.success === true || data.status === "success" || data.added === true || (data.cart_count !== undefined && data.cart_count >= 0)) {
+                if (data.success === true || data.status === "success" || data.added === true || (data.cart_count !== undefined)) {
                     // Update cart counter
                     const cartCounter = document.querySelector('#cart-count');
                     if (cartCounter && data.cart_count !== undefined) {
                         cartCounter.textContent = data.cart_count;
                     }
-                    showNotification(`${productName} added to cart!`);
+ showNotification('Added to cart!');
                 } else {
                     showNotification(data.message || 'Failed to add to cart', 'error');
                 }
             })
             .catch(error => {
                 console.error('Add to Cart Error:', error);
-                showNotification('Failed to add to cart', 'error');
+ showNotification('An error occurred while adding to cart.', 'error');
             });
         }
     </script>

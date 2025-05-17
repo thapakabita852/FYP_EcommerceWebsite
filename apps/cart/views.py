@@ -15,7 +15,12 @@ def add_to_cart(request, product_id):
         # Increase quantity if already in cart
         cart_item.quantity += 1
         cart_item.save()
-    return redirect('cart:view_cart')
+
+    cart_count = cart.items.count()
+    return JsonResponse({
+        'success': True,
+        'cart_count': cart_count
+    })
 
 @login_required
 def view_cart(request):
